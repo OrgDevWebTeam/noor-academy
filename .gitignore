@@ -1,0 +1,25 @@
+node_modules/
+dist/
+.next/
+.turbo/
+coverage/
+*.tsbuildinfo
+
+# Environment files - never commit real values. Only .env.example is tracked.
+.env
+.env.*
+!.env.example
+
+# Terraform / OpenTofu
+.terraform/
+*.tfstate
+*.tfstate.*
+*.tfvars
+
+.DS_Store
+.vscode/*
+!.vscode/extensions.json
+.idea/
+
+# Visual Studio
+.vs/

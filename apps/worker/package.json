@@ -1,0 +1,21 @@
+{
+  "name": "@noor/worker",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Async jobs and scheduled report execution (placeholder)",
+  "main": "./dist/index.js",
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "typecheck": "tsc --noEmit -p tsconfig.json",
+    "test": "vitest run --passWithNoTests"
+  },
+  "dependencies": {
+    "@noor/contracts": "workspace:*"
+  },
+  "devDependencies": {
+    "@noor/config": "workspace:*",
+    "@types/node": "catalog:",
+    "typescript": "catalog:",
+    "vitest": "catalog:"
+  }
+}

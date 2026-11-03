@@ -1,0 +1,4 @@
+{
+  "extends": "@noor/config/react.json",
+  "include": ["src"]
+}
