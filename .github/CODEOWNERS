@@ -1,8 +1,1 @@
-# TODO: replace with real GitHub users/teams, then enable
-# "Require review from Code Owners" in branch protection.
-#
-# *                         @your-org/engineering
-# /infra/                   @your-org/platform
-# /apps/api/                @your-org/backend
-# /apps/web/                @your-org/frontend
-# /packages/ui/             @your-org/frontend
+* @Orihubproject3
