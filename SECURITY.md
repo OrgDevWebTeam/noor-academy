@@ -4,7 +4,7 @@ Noor Academy handles data about children. We take security reports seriously.
 
 ## Reporting a vulnerability
 
-Please **do not** open a public issue. Email **security@REPLACE-ME.example** with:
+Please **do not** open a public issue. Email **Orihubproject3@gmail.com** with:
 
 - a description of the issue and its impact,
 - steps to reproduce,
