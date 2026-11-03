@@ -24,7 +24,7 @@ jobs:
       pull-requests: read
     steps:
       # Squash merge uses the PR title as the commit on main, so it must be a Conventional Commit.
-      - uses: amannn/action-semantic-pull-request@v5
+      - uses: amannn/action-semantic-pull-request@v6
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
