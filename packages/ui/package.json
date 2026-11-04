@@ -2,16 +2,33 @@
   "name": "@noor/ui",
   "version": "0.0.0",
   "private": true,
-  "description": "Bilingual, RTL-aware UI primitives and design tokens (Milestone 1)",
+  "description": "Bilingual, RTL-aware UI primitives and design tokens",
   "main": "./src/index.ts",
   "types": "./src/index.ts",
+  "exports": {
+    ".": "./src/index.ts",
+    "./styles.css": "./src/styles.css",
+    "./eslint/no-physical-classes": "./eslint/no-physical-classes.mjs"
+  },
   "scripts": {
+    "lint": "eslint",
     "typecheck": "tsc --noEmit -p tsconfig.json",
-    "test": "vitest run --passWithNoTests"
+    "test": "vitest run"
+  },
+  "peerDependencies": {
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
   },
   "devDependencies": {
     "@noor/config": "workspace:*",
+    "@types/node": "catalog:",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "eslint": "^9.15.0",
+    "react": "19.3.0",
+    "react-dom": "19.3.0",
     "typescript": "catalog:",
+    "typescript-eslint": "^8.15.0",
     "vitest": "catalog:"
   }
 }
