@@ -1,0 +1,35 @@
+# Local development only. Synthetic data, throwaway credentials.
+# Staging and production use managed MongoDB with their own secrets.
+services:
+  mongo:
+    image: mongo:8
+    container_name: noor-mongo
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: noor
+      MONGO_INITDB_ROOT_PASSWORD: noor
+    ports:
+      # Bound to localhost only; port 27018 avoids clashing with a local MongoDB install.
+      - "127.0.0.1:27018:27017"
+    volumes:
+      - noor_mongodata:/data/db
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "mongosh",
+          "--quiet",
+          "-u",
+          "noor",
+          "-p",
+          "noor",
+          "--authenticationDatabase",
+          "admin",
+          "--eval",
+          "db.adminCommand('ping')",
+        ]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  noor_mongodata:

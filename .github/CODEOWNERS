@@ -1,1 +1,27 @@
-* @Orihubproject3
+# Default owner (repo owner).
+*                          @Orihubproject3
+
+# TODO: replace each placeholder with the person's GitHub username. Each person must be a
+# collaborator with write access, otherwise GitHub ignores the line. Uncomment when ready.
+#
+# MongoDB core schema, API data layer      (Mohammad / Osama)
+# /apps/api/                 @MOHAMMAD-USERNAME @OSAMA-USERNAME
+# /docs/data/                @MOHAMMAD-USERNAME @OSAMA-USERNAME
+#
+# Next.js / PWA shell, RTL, UI primitives  (Qussai / Ismail)
+# /apps/web/                 @QUSSAI-USERNAME @ISMAIL-USERNAME
+# /packages/ui/              @QUSSAI-USERNAME @ISMAIL-USERNAME
+#
+# AI provider abstraction + telemetry      (Qussai)
+# /packages/ai-provider/     @QUSSAI-USERNAME
+# /packages/contracts/src/telemetry*      @QUSSAI-USERNAME
+#
+# Quran audio schema + dataset             (Ismail)
+# /packages/contracts/src/recitation*     @ISMAIL-USERNAME
+#
+# Tajweed taxonomy, feedback, escalation, GenAI boundaries (Qussai / Ismail)
+# /docs/ai/                  @QUSSAI-USERNAME @ISMAIL-USERNAME
+#
+# Infrastructure and CI                    (repo owner)
+# /infra/                    @Orihubproject3
+# /.github/                  @Orihubproject3
