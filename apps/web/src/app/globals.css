@@ -1,0 +1,15 @@
+@import "tailwindcss";
+@import "@noor/ui/styles.css";
+
+/* Tailwind only scans this app by default; the UI primitives live in packages/ui. */
+@source "../../../../packages/ui/src";
+
+@theme inline {
+  /* --font-ui is set by next/font on <html>, per page language (see app/fonts.ts). */
+  --font-sans: var(--font-ui), system-ui, sans-serif;
+}
+
+body {
+  background: var(--noor-surface);
+  color: var(--noor-ink);
+}
