@@ -1,0 +1,232 @@
+[
+  {
+    "surah_id": 1,
+    "ayah_id": 1,
+    "audio_file": "001001.mp3",
+    "total_duration_ms": 5800,
+    "words": [
+      {
+        "position": 1,
+        "text": "بِسْمِ",
+        "start_ms": 0,
+        "end_ms": 1150
+      },
+      {
+        "position": 2,
+        "text": "ٱللَّهِ",
+        "start_ms": 1150,
+        "end_ms": 2300
+      },
+      {
+        "position": 3,
+        "text": "ٱلرَّحْمَٰنِ",
+        "start_ms": 2300,
+        "end_ms": 3950
+      },
+      {
+        "position": 4,
+        "text": "ٱلرَّحِيمِ",
+        "start_ms": 3950,
+        "end_ms": 5800
+      }
+    ]
+  },
+  {
+    "surah_id": 1,
+    "ayah_id": 2,
+    "audio_file": "001002.mp3",
+    "total_duration_ms": 5200,
+    "words": [
+      {
+        "position": 1,
+        "text": "ٱلْحَمْدُ",
+        "start_ms": 0,
+        "end_ms": 1200
+      },
+      {
+        "position": 2,
+        "text": "لِلَّهِ",
+        "start_ms": 1200,
+        "end_ms": 2100
+      },
+      {
+        "position": 3,
+        "text": "رَبِّ",
+        "start_ms": 2100,
+        "end_ms": 2850
+      },
+      {
+        "position": 4,
+        "text": "ٱلْعَٰلَمِينَ",
+        "start_ms": 2850,
+        "end_ms": 5200
+      }
+    ]
+  },
+  {
+    "surah_id": 1,
+    "ayah_id": 3,
+    "audio_file": "001003.mp3",
+    "total_duration_ms": 3800,
+    "words": [
+      {
+        "position": 1,
+        "text": "ٱلرَّحْمَٰنِ",
+        "start_ms": 0,
+        "end_ms": 1700
+      },
+      {
+        "position": 2,
+        "text": "ٱلرَّحِيمِ",
+        "start_ms": 1700,
+        "end_ms": 3800
+      }
+    ]
+  },
+  {
+    "surah_id": 1,
+    "ayah_id": 4,
+    "audio_file": "001004.mp3",
+    "total_duration_ms": 3900,
+    "words": [
+      {
+        "position": 1,
+        "text": "مَٰلِكِ",
+        "start_ms": 0,
+        "end_ms": 1100
+      },
+      {
+        "position": 2,
+        "text": "يَوْمِ",
+        "start_ms": 1100,
+        "end_ms": 1950
+      },
+      {
+        "position": 3,
+        "text": "ٱلدِّينِ",
+        "start_ms": 1950,
+        "end_ms": 3900
+      }
+    ]
+  },
+  {
+    "surah_id": 1,
+    "ayah_id": 5,
+    "audio_file": "001005.mp3",
+    "total_duration_ms": 5900,
+    "words": [
+      {
+        "position": 1,
+        "text": "إِيَّاكَ",
+        "start_ms": 0,
+        "end_ms": 1400
+      },
+      {
+        "position": 2,
+        "text": "نَعْبُدُ",
+        "start_ms": 1400,
+        "end_ms": 2700
+      },
+      {
+        "position": 3,
+        "text": "وَإِيَّاكَ",
+        "start_ms": 2700,
+        "end_ms": 4100
+      },
+      {
+        "position": 4,
+        "text": "نَسْتَعِينُ",
+        "start_ms": 4100,
+        "end_ms": 5900
+      }
+    ]
+  },
+  {
+    "surah_id": 1,
+    "ayah_id": 6,
+    "audio_file": "001006.mp3",
+    "total_duration_ms": 5300,
+    "words": [
+      {
+        "position": 1,
+        "text": "ٱهْدِنَا",
+        "start_ms": 0,
+        "end_ms": 1350
+      },
+      {
+        "position": 2,
+        "text": "ٱلصِّرَٰطَ",
+        "start_ms": 1350,
+        "end_ms": 2900
+      },
+      {
+        "position": 3,
+        "text": "ٱلْمُسْتَقِيمَ",
+        "start_ms": 2900,
+        "end_ms": 5300
+      }
+    ]
+  },
+  {
+    "surah_id": 1,
+    "ayah_id": 7,
+    "audio_file": "001007.mp3",
+    "total_duration_ms": 12800,
+    "words": [
+      {
+        "position": 1,
+        "text": "صِرَٰطَ",
+        "start_ms": 0,
+        "end_ms": 1200
+      },
+      {
+        "position": 2,
+        "text": "ٱلَّذِينَ",
+        "start_ms": 1200,
+        "end_ms": 2200
+      },
+      {
+        "position": 3,
+        "text": "أَنْعَمْتَ",
+        "start_ms": 2200,
+        "end_ms": 3400
+      },
+      {
+        "position": 4,
+        "text": "عَلَيْهِمْ",
+        "start_ms": 3400,
+        "end_ms": 4500
+      },
+      {
+        "position": 5,
+        "text": "غَيْرِ",
+        "start_ms": 4500,
+        "end_ms": 5500
+      },
+      {
+        "position": 6,
+        "text": "ٱلْمَغْضُوبِ",
+        "start_ms": 5500,
+        "end_ms": 7200
+      },
+      {
+        "position": 7,
+        "text": "عَلَيْهِمْ",
+        "start_ms": 7200,
+        "end_ms": 8300
+      },
+      {
+        "position": 8,
+        "text": "وَلَا",
+        "start_ms": 8300,
+        "end_ms": 9400
+      },
+      {
+        "position": 9,
+        "text": "ٱلضَّآلِّينَ",
+        "start_ms": 9400,
+        "end_ms": 12800
+      }
+    ]
+  }
+]

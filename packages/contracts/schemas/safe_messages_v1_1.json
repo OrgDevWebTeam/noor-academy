@@ -1,0 +1,77 @@
+{
+  "_meta": {
+    "version": "1.1-proposal",
+    "rules": [
+      "Gender-neutral address: agent sentences are pre-recorded human audio (CRS C-02), and Arabic second-person forms are gendered when spoken. Use we-forms / impersonal forms.",
+      "No claim of mastery or closeness ('متقنة', 'قريب جداً'): the model is preliminary evidence only (AP-04).",
+      "Short, one idea per sentence, no grammar terms except the rule name taught in the lesson.",
+      "No promise of a date or a class for teacher review (teacher may be unavailable, Arch 8.4).",
+      "The word 'الملوّنة' refers to the highlighted word in SCR-C05; adjust once Ola fixes the highlight style."
+    ]
+  },
+  "FEEDBACK_CORRECT_EXCELLENT": {
+    "ar": "ما شاء الله! قراءة جميلة. هيا نكمل.",
+    "en": "Masha'Allah! Beautiful recitation. Let's keep going.",
+    "used_for": "decision=accepted"
+  },
+  "FEEDBACK_LISTEN_AND_REPEAT_WORD": {
+    "ar": "محاولة طيبة! لنستمع معاً إلى الكلمة الملوّنة، ثم نقرؤها مرة أخرى.",
+    "en": "Good try! Let's listen to the colored word together, then say it again.",
+    "used_for": "ERR_PRON_LETTER_SUB"
+  },
+  "FEEDBACK_CHECK_HARAKA": {
+    "ar": "محاولة طيبة! لنستمع إلى حركة الحرف الملوّن مرة أخرى.",
+    "en": "Good try! Let's listen to the vowel sound on the colored letter once more.",
+    "used_for": "ERR_PRON_HARAKA"
+  },
+  "FEEDBACK_WORD_MISSED": {
+    "ar": "لنستمع إلى الكلمة الملوّنة، فقد تخطّيناها. ثم نقرأ الآية مرة أخرى.",
+    "en": "Let's listen to the colored word, we skipped it. Then we'll read the verse again.",
+    "used_for": "ERR_MEM_OMISSION"
+  },
+  "FEEDBACK_WORD_DIFFERENT": {
+    "ar": "لنستمع مرة أخرى إلى الآية كما وردت، ثم نقرؤها معاً.",
+    "en": "Let's listen to the verse once more exactly as it is, then read it together.",
+    "used_for": "ERR_MEM_SUBSTITUTION, ERR_MEM_INSERTION"
+  },
+  "FEEDBACK_MADD_REMINDER": {
+    "ar": "لنمدّ صوت الحرف الملوّن قليلاً. هيا نسمعه معاً.",
+    "en": "Let's stretch the sound of the colored letter a little. Let's hear it together.",
+    "used_for": "ERR_TAJ_MADD_SHORT"
+  },
+  "FEEDBACK_GHUNNA_REMINDER": {
+    "ar": "لنُسمِع صوت الغنّة الخفيف من الأنف عند الحرف الملوّن.",
+    "en": "Let's add the soft nasal 'ghunna' sound on the colored letter.",
+    "used_for": "ERR_TAJ_GHONNA_OMIT"
+  },
+  "FEEDBACK_QALQALA_REMINDER": {
+    "ar": "لنعطِ الحرف الملوّن نبرة خفيفة ترتدّ، وهذه هي القلقلة.",
+    "en": "Let's give the colored letter its little bounce, called qalqala.",
+    "used_for": "ERR_TAJ_QALQALA_OMIT"
+  },
+  "FEEDBACK_AUDIO_UNCLEAR": {
+    "ar": "لم يصلنا صوت واضح. لنقترب من الميكروفون ونسجّل مرة أخرى بهدوء.",
+    "en": "We couldn't hear a clear voice. Let's move closer to the microphone and record again, calmly.",
+    "used_for": "status=quality_rejected (not counted as an attempt)"
+  },
+  "FEEDBACK_TEACHER_REVIEW": {
+    "ar": "جهد مبارك! سيستمع معلمك إلى تلاوتك.",
+    "en": "Blessed effort! Your teacher will listen to your recitation.",
+    "used_for": "decision=uncertain, requires_teacher_review=true"
+  },
+  "FEEDBACK_RETRY_LIMIT_MOVE_ON": {
+    "ar": "لا بأس! سيساعدنا معلمك في هذه الآية. هيا ننتقل إلى الآية التالية.",
+    "en": "That's okay! Your teacher will help us with this verse. Let's move on to the next verse.",
+    "used_for": "escalation after repeated attempts (only if the CRS change is approved)"
+  },
+  "FEEDBACK_ANALYSIS_DELAYED": {
+    "ar": "ما زلنا نستمع لتلاوتك. يمكننا المتابعة إلى الآية التالية.",
+    "en": "We're still listening to your recitation. We can go on to the next verse.",
+    "used_for": "status=model_unavailable or timeout (Arch 8.4)"
+  },
+  "FEEDBACK_SESSION_TIMEOUT": {
+    "ar": "شكراً لجهدك اليوم! سنكمل غداً من حيث توقفنا.",
+    "en": "Thank you for your effort today! We'll continue tomorrow from where we stopped.",
+    "used_for": "session INCOMPLETE after 10 minutes (FR-QUR-007)"
+  }
+}

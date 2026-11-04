@@ -1,0 +1,284 @@
+[
+  {
+    "surah_id": 1,
+    "surah_name_ar": "الفاتحة",
+    "surah_name_en": "Al-Fatiha",
+    "ayahs": [
+      {
+        "ayah_id": 1,
+        "text_uthmani": "بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ",
+        "words": [
+          {"position": 1, "text": "بِسْمِ"},
+          {"position": 2, "text": "ٱللَّهِ"},
+          {"position": 3, "text": "ٱلرَّحْمَٰنِ"},
+          {"position": 4, "text": "ٱلرَّحِيمِ"}
+        ]
+      },
+      {
+        "ayah_id": 2,
+        "text_uthmani": "ٱلْحَمْدُ لِلَّهِ رَبِّ ٱلْعَٰلَمِينَ",
+        "words": [
+          {"position": 1, "text": "ٱلْحَمْدُ"},
+          {"position": 2, "text": "لِلَّهِ"},
+          {"position": 3, "text": "رَبِّ"},
+          {"position": 4, "text": "ٱلْعَٰلَمِينَ"}
+        ]
+      },
+      {
+        "ayah_id": 3,
+        "text_uthmani": "ٱلرَّحْمَٰنِ ٱلرَّحِيمِ",
+        "words": [
+          {"position": 1, "text": "ٱلرَّحْمَٰنِ"},
+          {"position": 2, "text": "ٱلرَّحِيمِ"}
+        ]
+      },
+      {
+        "ayah_id": 4,
+        "text_uthmani": "مَٰلِكِ يَوْمِ ٱلدِّينِ",
+        "words": [
+          {"position": 1, "text": "مَٰلِكِ"},
+          {"position": 2, "text": "يَوْمِ"},
+          {"position": 3, "text": "ٱلدِّينِ"}
+        ]
+      },
+      {
+        "ayah_id": 5,
+        "text_uthmani": "إِيَّاكَ نَعْبُدُ وَإِيَّاكَ نَسْتَعِينُ",
+        "words": [
+          {"position": 1, "text": "إِيَّاكَ"},
+          {"position": 2, "text": "نَعْبُدُ"},
+          {"position": 3, "text": "وَإِيَّاكَ"},
+          {"position": 4, "text": "نَسْتَعِينُ"}
+        ]
+      },
+      {
+        "ayah_id": 6,
+        "text_uthmani": "ٱهْدِنَا ٱلصِّرَٰطَ ٱلْمُسْتَقِيمَ",
+        "words": [
+          {"position": 1, "text": "ٱهْدِنَا"},
+          {"position": 2, "text": "ٱلصِّرَٰطَ"},
+          {"position": 3, "text": "ٱلْمُسْتَقِيمَ"}
+        ]
+      },
+      {
+        "ayah_id": 7,
+        "text_uthmani": "صِرَٰطَ ٱلَّذِينَ أَنْعَمْتَ عَلَيْهِمْ غَيْرِ ٱلْمَغْضُوبِ عَلَيْهِمْ وَلَا ٱلضَّآلِّينَ",
+        "words": [
+          {"position": 1, "text": "صِرَٰطَ"},
+          {"position": 2, "text": "ٱلَّذِينَ"},
+          {"position": 3, "text": "أَنْعَمْتَ"},
+          {"position": 4, "text": "عَلَيْهِمْ"},
+          {"position": 5, "text": "غَيْرِ"},
+          {"position": 6, "text": "ٱلْمَغْضُوبِ"},
+          {"position": 7, "text": "عَلَيْهِمْ"},
+          {"position": 8, "text": "وَلَا"},
+          {"position": 9, "text": "ٱلضَّآلِّينَ"}
+        ]
+      }
+    ]
+  },
+  {
+    "surah_id": 108,
+    "surah_name_ar": "الكوثر",
+    "surah_name_en": "Al-Kawthar",
+    "ayahs": [
+      {
+        "ayah_id": 1,
+        "text_uthmani": "إِنَّآ أَعْطَيْنَٰكَ ٱلْكَوْثَرَ",
+        "words": [
+          {"position": 1, "text": "إِنَّآ"},
+          {"position": 2, "text": "أَعْطَيْنَٰكَ"},
+          {"position": 3, "text": "ٱلْكَوْثَرَ"}
+        ]
+      },
+      {
+        "ayah_id": 2,
+        "text_uthmani": "فَصَلِّ لِرَبِّكَ وَٱنْحَرْ",
+        "words": [
+          {"position": 1, "text": "فَصَلِّ"},
+          {"position": 2, "text": "لِرَبِّكَ"},
+          {"position": 3, "text": "وَٱنْحَرْ"}
+        ]
+      },
+      {
+        "ayah_id": 3,
+        "text_uthmani": "إِنَّ شَانِئَكَ هُوَ ٱلْأَبْتَرُ",
+        "words": [
+          {"position": 1, "text": "إِنَّ"},
+          {"position": 2, "text": "شَانِئَكَ"},
+          {"position": 3, "text": "هُوَ"},
+          {"position": 4, "text": "ٱلْأَبْتَرُ"}
+        ]
+      }
+    ]
+  },
+  {
+    "surah_id": 112,
+    "surah_name_ar": "الإخلاص",
+    "surah_name_en": "Al-Ikhlas",
+    "ayahs": [
+      {
+        "ayah_id": 1,
+        "text_uthmani": "قُلْ هُوَ ٱللَّهُ أَحَدٌ",
+        "words": [
+          {"position": 1, "text": "قُلْ"},
+          {"position": 2, "text": "هُوَ"},
+          {"position": 3, "text": "ٱللَّهُ"},
+          {"position": 4, "text": "أَحَدٌ"}
+        ]
+      },
+      {
+        "ayah_id": 2,
+        "text_uthmani": "ٱللَّهُ ٱلصَّمَدُ",
+        "words": [
+          {"position": 1, "text": "ٱللَّهُ"},
+          {"position": 2, "text": "ٱلصَّمَدُ"}
+        ]
+      },
+      {
+        "ayah_id": 3,
+        "text_uthmani": "لَمْ يَلِدْ وَلَمْ يُولَدْ",
+        "words": [
+          {"position": 1, "text": "لَمْ"},
+          {"position": 2, "text": "يَلِدْ"},
+          {"position": 3, "text": "وَلَمْ"},
+          {"position": 4, "text": "يُولَدْ"}
+        ]
+      },
+      {
+        "ayah_id": 4,
+        "text_uthmani": "وَلَمْ يَكُن لَّهُۥ كُفُوًا أَحَدٌۢ",
+        "words": [
+          {"position": 1, "text": "وَلَمْ"},
+          {"position": 2, "text": "يَكُن"},
+          {"position": 3, "text": "لَّهُۥ"},
+          {"position": 4, "text": "كُفُوًا"},
+          {"position": 5, "text": "أَحَدٌۢ"}
+        ]
+      }
+    ]
+  },
+  {
+    "surah_id": 113,
+    "surah_name_ar": "الفلق",
+    "surah_name_en": "Al-Falaq",
+    "ayahs": [
+      {
+        "ayah_id": 1,
+        "text_uthmani": "قُلْ أَعُوذُ بِرَبِّ ٱلْفَلَقِ",
+        "words": [
+          {"position": 1, "text": "قُلْ"},
+          {"position": 2, "text": "أَعُوذُ"},
+          {"position": 3, "text": "بِرَبِّ"},
+          {"position": 4, "text": "ٱلْفَلَقِ"}
+        ]
+      },
+      {
+        "ayah_id": 2,
+        "text_uthmani": "مِن شَرِّ مَا خَلَقَ",
+        "words": [
+          {"position": 1, "text": "مِن"},
+          {"position": 2, "text": "شَرِّ"},
+          {"position": 3, "text": "مَا"},
+          {"position": 4, "text": "خَلَقَ"}
+        ]
+      },
+      {
+        "ayah_id": 3,
+        "text_uthmani": "وَمِن شَرِّ غَاسِقٍ إِذَا وَقَبَ",
+        "words": [
+          {"position": 1, "text": "وَمِن"},
+          {"position": 2, "text": "شَرِّ"},
+          {"position": 3, "text": "غَاسِقٍ"},
+          {"position": 4, "text": "إِذَا"},
+          {"position": 5, "text": "وَقَبَ"}
+        ]
+      },
+      {
+        "ayah_id": 4,
+        "text_uthmani": "وَمِن شَرِّ ٱلنَّفَّٰثَٰتِ فِى ٱلْعُقَدِ",
+        "words": [
+          {"position": 1, "text": "وَمِن"},
+          {"position": 2, "text": "شَرِّ"},
+          {"position": 3, "text": "ٱلنَّفَّٰثَٰتِ"},
+          {"position": 4, "text": "فِى"},
+          {"position": 5, "text": "ٱلْعُقَدِ"}
+        ]
+      },
+      {
+        "ayah_id": 5,
+        "text_uthmani": "وَمِن شَرِّ حَاسِدٍ إِذَا حَسَدَ",
+        "words": [
+          {"position": 1, "text": "وَمِن"},
+          {"position": 2, "text": "شَرِّ"},
+          {"position": 3, "text": "حَاسِدٍ"},
+          {"position": 4, "text": "إِذَا"},
+          {"position": 5, "text": "حَسَدَ"}
+        ]
+      }
+    ]
+  },
+  {
+    "surah_id": 114,
+    "surah_name_ar": "الناس",
+    "surah_name_en": "An-Nas",
+    "ayahs": [
+      {
+        "ayah_id": 1,
+        "text_uthmani": "قُلْ أَعُوذُ بِرَبِّ ٱلنَّاسِ",
+        "words": [
+          {"position": 1, "text": "قُلْ"},
+          {"position": 2, "text": "أَعُوذُ"},
+          {"position": 3, "text": "بِرَبِّ"},
+          {"position": 4, "text": "ٱلنَّاسِ"}
+        ]
+      },
+      {
+        "ayah_id": 2,
+        "text_uthmani": "مَلِكِ ٱلنَّاسِ",
+        "words": [
+          {"position": 1, "text": "مَلِكِ"},
+          {"position": 2, "text": "ٱلنَّاسِ"}
+        ]
+      },
+      {
+        "ayah_id": 3,
+        "text_uthmani": "إِلَٰهِ ٱلنَّاسِ",
+        "words": [
+          {"position": 1, "text": "إِلَٰهِ"},
+          {"position": 2, "text": "ٱلنَّاسِ"}
+        ]
+      },
+      {
+        "ayah_id": 4,
+        "text_uthmani": "مِن شَرِّ ٱلْوَسْوَاسِ ٱلْخَنَّاسِ",
+        "words": [
+          {"position": 1, "text": "مِن"},
+          {"position": 2, "text": "شَرِّ"},
+          {"position": 3, "text": "ٱلْوَسْوَاسِ"},
+          {"position": 4, "text": "ٱلْخَنَّاسِ"}
+        ]
+      },
+      {
+        "ayah_id": 5,
+        "text_uthmani": "ٱلَّذِى يُوَسْوِسُ فِى صُدُورِ ٱلنَّاسِ",
+        "words": [
+          {"position": 1, "text": "ٱلَّذِى"},
+          {"position": 2, "text": "يُوَسْوِسُ"},
+          {"position": 3, "text": "فِى"},
+          {"position": 4, "text": "صُدُورِ"},
+          {"position": 5, "text": "ٱلنَّاسِ"}
+        ]
+      },
+      {
+        "ayah_id": 6,
+        "text_uthmani": "مِنَ ٱلْجِنَّةِ وَٱلنَّاسِ",
+        "words": [
+          {"position": 1, "text": "مِنَ"},
+          {"position": 2, "text": "ٱلْجِنَّةِ"},
+          {"position": 3, "text": "وَٱلنَّاسِ"}
+        ]
+      }
+    ]
+  }
+]
