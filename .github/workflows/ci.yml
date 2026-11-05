@@ -60,6 +60,29 @@ jobs:
       - name: Build
         run: pnpm build
 
+  ai-service:
+    name: AI service (pytest)
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    defaults:
+      run:
+        working-directory: services/ai
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+          cache-dependency-path: services/ai/requirements*.txt
+
+      - name: Install
+        run: pip install -r requirements-dev.txt
+
+      # Also checks the service against packages/contracts/schemas (the AI contract source of truth)
+      - name: Test
+        run: pytest
+
   audit:
     name: Dependency audit
     runs-on: ubuntu-latest

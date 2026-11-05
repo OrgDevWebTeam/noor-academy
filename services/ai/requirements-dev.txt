@@ -1,0 +1,5 @@
+-r requirements.txt
+pytest>=8
+httpx>=0.27
+# Checks results against packages/contracts/schemas/recitation_result.schema.json
+jsonschema>=4.21

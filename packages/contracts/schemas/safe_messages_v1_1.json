@@ -52,12 +52,12 @@
   "FEEDBACK_AUDIO_UNCLEAR": {
     "ar": "لم يصلنا صوت واضح. لنقترب من الميكروفون ونسجّل مرة أخرى بهدوء.",
     "en": "We couldn't hear a clear voice. Let's move closer to the microphone and record again, calmly.",
-    "used_for": "status=quality_rejected (not counted as an attempt)"
+    "used_for": "quality != ok (not counted as an attempt)"
   },
   "FEEDBACK_TEACHER_REVIEW": {
     "ar": "جهد مبارك! سيستمع معلمك إلى تلاوتك.",
     "en": "Blessed effort! Your teacher will listen to your recitation.",
-    "used_for": "decision=uncertain, requires_teacher_review=true"
+    "used_for": "decision=uncertain (the ayah goes to the teacher); ERR_TAJ_UNMAPPED, ERR_TECH_MODELS_DISAGREE"
   },
   "FEEDBACK_RETRY_LIMIT_MOVE_ON": {
     "ar": "لا بأس! سيساعدنا معلمك في هذه الآية. هيا ننتقل إلى الآية التالية.",
@@ -67,7 +67,7 @@
   "FEEDBACK_ANALYSIS_DELAYED": {
     "ar": "ما زلنا نستمع لتلاوتك. يمكننا المتابعة إلى الآية التالية.",
     "en": "We're still listening to your recitation. We can go on to the next verse.",
-    "used_for": "status=model_unavailable or timeout (Arch 8.4)"
+    "used_for": "API fallback: model=none, AI down or timeout (Arch 8.5)"
   },
   "FEEDBACK_SESSION_TIMEOUT": {
     "ar": "شكراً لجهدك اليوم! سنكمل غداً من حيث توقفنا.",

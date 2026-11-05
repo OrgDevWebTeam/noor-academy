@@ -11,3 +11,5 @@ export const textDirection = (locale: Locale): "ltr" | "rtl" => (locale === "ar"
 /** Deployment environments (architecture 15.1). Only production holds real family data. */
 export const APP_ENVS = ["local", "development", "staging", "production"] as const;
 export type AppEnv = (typeof APP_ENVS)[number];
+
+export * from "./ai";
