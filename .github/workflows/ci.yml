@@ -93,5 +93,3 @@ jobs:
             -v "$PWD:/repo" \
             ghcr.io/gitleaks/gitleaks:v${GITLEAKS_VERSION} \
             git --redact --verbose /repo
-      - name: Scan repository history
-        run: gitleaks git --redact --verbose .
