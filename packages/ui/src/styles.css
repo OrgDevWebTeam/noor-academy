@@ -1,0 +1,51 @@
+/*
+ * Noor design tokens. Values are placeholders until the design system is final:
+ * change a value here and every screen follows.
+ *
+ * Components never use raw colours. They use the Tailwind utilities generated from these
+ * names (bg-surface, text-ink, border-control, rounded-control, min-h-control...).
+ * A unit test checks the text and control colours against WCAG 2.2 AA contrast.
+ */
+
+:root {
+  --noor-surface: #ffffff;
+  --noor-surface-muted: #f4f4f5;
+  --noor-ink: #18181b;
+  --noor-ink-muted: #52525b;
+  /* Decorative lines (cards, dividers). */
+  --noor-line: #e4e4e7;
+  /* Borders that identify a control, such as an input box: needs 3:1 contrast. */
+  --noor-control: #71717a;
+  --noor-primary: #1b6b5a;
+  --noor-on-primary: #ffffff;
+  --noor-danger: #b42318;
+  --noor-success: #1a7f37;
+  --noor-warning: #8a5a00;
+  --noor-info: #0b63c9;
+  --noor-focus: #1b6b5a;
+
+  --noor-radius: 0.75rem;
+  --noor-text-body: 1rem;
+  /* At least 44px, the minimum touch target. */
+  --noor-control-height: 2.75rem;
+}
+
+@theme inline {
+  --color-surface: var(--noor-surface);
+  --color-surface-muted: var(--noor-surface-muted);
+  --color-ink: var(--noor-ink);
+  --color-ink-muted: var(--noor-ink-muted);
+  --color-line: var(--noor-line);
+  --color-control: var(--noor-control);
+  --color-primary: var(--noor-primary);
+  --color-on-primary: var(--noor-on-primary);
+  --color-danger: var(--noor-danger);
+  --color-success: var(--noor-success);
+  --color-warning: var(--noor-warning);
+  --color-info: var(--noor-info);
+  --color-focus: var(--noor-focus);
+
+  --radius-control: var(--noor-radius);
+  --text-body: var(--noor-text-body);
+  --spacing-control: var(--noor-control-height);
+}
