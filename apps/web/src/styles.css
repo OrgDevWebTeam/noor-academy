@@ -1,0 +1,22 @@
+@import "tailwindcss";
+
+/* Tailwind skips files outside the app by default, so point it at the UI package. */
+@source "../../../packages/ui/src";
+
+/* Design tokens used by the components (border-line, text-ink-muted, outline-focus...). */
+@theme {
+  --color-ink: #1b1f23;
+  --color-ink-muted: #5b6570;
+  --color-line: #d8dde3;
+  --color-surface: #ffffff;
+  --color-surface-muted: #f4f6f8;
+  --color-brand: #0f6b4f;
+  --color-brand-ink: #ffffff;
+  --color-focus: #1a5fd0;
+}
+
+body {
+  background: var(--color-surface);
+  color: var(--color-ink);
+  font-family: system-ui, sans-serif;
+}

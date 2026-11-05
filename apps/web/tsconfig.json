@@ -4,6 +4,9 @@
     "types": ["vite/client"],
     "baseUrl": ".",
     "paths": {
+      "@/*": ["./src/*"],
+      "@noor/ui": ["../../packages/ui/src/index.ts"],
+      "@noor/ui/*": ["../../packages/ui/src/*"],
       "@noor/contracts": ["../../packages/contracts/src/index.ts"],
       "@noor/contracts/*": ["../../packages/contracts/src/*"]
     }

@@ -1,0 +1,11 @@
+{
+  "error": {
+    "title": "Something went wrong",
+    "body": "This part of the page could not load. Please try again.",
+    "retry": "Try again"
+  },
+  "offline": {
+    "title": "You are offline",
+    "body": "Some things may not load until the connection is back."
+  }
+}

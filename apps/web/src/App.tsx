@@ -1,34 +1,60 @@
-import { DEFAULT_LOCALE, LOCALES, textDirection, type Locale } from "@noor/contracts/locale";
-import { useEffect, useState } from "react";
+import { EmptyState, buttonClasses } from "@noor/ui";
+import { BrowserRouter, Link, Outlet, Route, Routes } from "react-router-dom";
+import { OfflineBanner } from "@/components/offline-banner";
+import { ScreenPlaceholder } from "@/components/screen-placeholder";
+import { SiteHeader } from "@/components/site-header";
+import { LocaleLayout, RootRedirect, useI18n } from "@/i18n/i18n-provider";
 
-/**
- * Placeholder shell proving the toolchain and shared contracts work end to end.
- * Replace with the real shell (router, i18n, PWA, UI primitives) - owners: Qussai / Ismail.
- */
-export function App() {
-  const [locale, setLocale] = useState<Locale>(DEFAULT_LOCALE);
-
-  useEffect(() => {
-    document.documentElement.lang = locale;
-    document.documentElement.dir = textDirection(locale);
-  }, [locale]);
-
+/** Chrome shared by every localized page: offline notice, header, page content. */
+function Shell() {
+  const { locale } = useI18n();
   return (
-    <main style={{ paddingInline: "2rem", fontFamily: "system-ui, sans-serif" }}>
-      <h1>Noor Academy</h1>
-      <p>{locale === "ar" ? "مرحباً بكم" : "Welcome"}</p>
-      <div style={{ display: "flex", gap: "0.5rem" }}>
-        {LOCALES.map((code) => (
-          <button
-            key={code}
-            type="button"
-            disabled={code === locale}
-            onClick={() => setLocale(code)}
-          >
-            {code.toUpperCase()}
-          </button>
-        ))}
-      </div>
-    </main>
+    <>
+      <OfflineBanner locale={locale} />
+      <SiteHeader />
+      <main className="mx-auto w-full max-w-5xl px-4 py-6 sm:px-6">
+        <Outlet />
+      </main>
+    </>
+  );
+}
+
+function HomePage() {
+  const { dict } = useI18n();
+  // Swap the note for a dictionary key once the real home screen is designed.
+  return <ScreenPlaceholder screenId="C01" title={dict.meta.title} note="Coming soon" />;
+}
+
+function NotFoundPage() {
+  const { locale } = useI18n();
+  // Move these strings into en.json / ar.json (e.g. a `notFound` block) as soon as you can.
+  return (
+    <EmptyState
+      headingLevel={1}
+      title="Page not found"
+      description="The page you are looking for does not exist."
+      action={
+        <Link to={`/${locale}`} className={buttonClasses("secondary")}>
+          Home
+        </Link>
+      }
+    />
+  );
+}
+
+export function App() {
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<RootRedirect />} />
+        <Route path=":locale" element={<LocaleLayout />}>
+          <Route element={<Shell />}>
+            <Route index element={<HomePage />} />
+            {/* Add real screens here, e.g. <Route path="lessons" element={<LessonsPage />} /> */}
+            <Route path="*" element={<NotFoundPage />} />
+          </Route>
+        </Route>
+      </Routes>
+    </BrowserRouter>
   );
 }
