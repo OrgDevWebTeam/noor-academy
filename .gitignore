@@ -5,6 +5,15 @@ dist/
 coverage/
 *.tsbuildinfo
 
+# Python (services/ai)
+.venv/
+__pycache__/
+.pytest_cache/
+*.pyc
+
+# Evaluation recordings and labels never enter the repo (SEC-011, SEC-017)
+noor-eval/
+
 # Environment files - never commit real values. Only .env.example is tracked.
 .env
 .env.*
