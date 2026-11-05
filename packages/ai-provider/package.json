@@ -1,0 +1,22 @@
+{
+  "name": "@noor/ai-provider",
+  "version": "0.0.0",
+  "private": true,
+  "description": "AI provider abstraction, stub provider and evaluation telemetry wrapper",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "typecheck": "tsc --noEmit -p tsconfig.json",
+    "test": "vitest run --passWithNoTests"
+  },
+  "dependencies": {
+    "@noor/contracts": "workspace:*"
+  },
+  "devDependencies": {
+    "@noor/config": "workspace:*",
+    "@types/node": "catalog:",
+    "typescript": "catalog:",
+    "vitest": "catalog:"
+  }
+}

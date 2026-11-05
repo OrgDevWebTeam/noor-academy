@@ -32,3 +32,12 @@ noor-eval/
 
 # Visual Studio
 .vs/
+
+# Never commit audio or datasets (public repo)
+datasets/
+*.wav
+*.webm
+*.m4a
+*.mp3
+*.flac
+*.ogg
