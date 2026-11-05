@@ -1,9 +1,11 @@
 {
-  "extends": "@noor/config/node.json",
+  "extends": "@noor/config/react.json",
   "compilerOptions": {
-    "outDir": "dist",
-    "rootDir": "src"
+    "types": ["vite/client"],
+    "baseUrl": ".",
+    "paths": {
+      "@noor/contracts": ["../../packages/contracts/src/index.ts"]
+    }
   },
-  "include": ["src"],
-  "exclude": ["src/**/*.test.ts"]
+  "include": ["src"]
 }

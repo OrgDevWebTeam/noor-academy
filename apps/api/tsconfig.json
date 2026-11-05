@@ -2,9 +2,7 @@
   "extends": "@noor/config/node.json",
   "compilerOptions": {
     "noEmit": true,
-    "rootDir": "src",
-    "experimentalDecorators": true,
-    "emitDecoratorMetadata": true
+    "rootDir": "src"
   },
   "include": ["src"]
 }

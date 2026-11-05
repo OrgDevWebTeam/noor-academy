@@ -2,20 +2,27 @@
   "name": "@noor/web",
   "version": "0.0.0",
   "private": true,
-  "description": "Next.js PWA (placeholder until Milestone 1 scaffolds Next.js)",
-  "main": "./dist/index.js",
+  "description": "React (Vite) PWA - bilingual, RTL/LTR",
+  "type": "module",
   "scripts": {
-    "build": "tsc -p tsconfig.json",
+    "dev": "vite",
+    "build": "tsc --noEmit -p tsconfig.json && vite build",
+    "preview": "vite preview",
     "typecheck": "tsc --noEmit -p tsconfig.json",
     "test": "vitest run --passWithNoTests"
   },
   "dependencies": {
-    "@noor/contracts": "workspace:*"
+    "@noor/contracts": "workspace:*",
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1"
   },
   "devDependencies": {
     "@noor/config": "workspace:*",
-    "@types/node": "catalog:",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "@vitejs/plugin-react": "^5.2.0",
     "typescript": "catalog:",
+    "vite": "^7.3.7",
     "vitest": "catalog:"
   }
 }

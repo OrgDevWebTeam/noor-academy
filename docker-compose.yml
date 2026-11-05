@@ -1,14 +1,13 @@
-# Local development only. Synthetic data, throwaway credentials.
-# Staging and production use managed MongoDB with their own secrets.
+# Local development only. Synthetic data, no real credentials.
+# Staging and production use managed MongoDB (Atlas) with their own users and secrets.
 services:
   mongo:
     image: mongo:8
     container_name: noor-mongo
-    environment:
-      MONGO_INITDB_ROOT_USERNAME: noor
-      MONGO_INITDB_ROOT_PASSWORD: noor
+    # A single-node replica set, because MongoDB transactions require one.
+    command: ["--replSet", "rs0", "--bind_ip_all"]
     ports:
-      # Bound to localhost only; port 27018 avoids clashing with a local MongoDB install.
+      # Bound to localhost only; 27018 avoids clashing with a local MongoDB on 27017.
       - "127.0.0.1:27018:27017"
     volumes:
       - noor_mongodata:/data/db
@@ -18,18 +17,13 @@ services:
           "CMD",
           "mongosh",
           "--quiet",
-          "-u",
-          "noor",
-          "-p",
-          "noor",
-          "--authenticationDatabase",
-          "admin",
           "--eval",
-          "db.adminCommand('ping')",
+          "try { rs.status().ok } catch (e) { rs.initiate({ _id: 'rs0', members: [{ _id: 0, host: 'localhost:27017' }] }).ok }",
         ]
       interval: 5s
-      timeout: 5s
-      retries: 10
+      timeout: 10s
+      retries: 20
+      start_period: 10s
 
 volumes:
   noor_mongodata:

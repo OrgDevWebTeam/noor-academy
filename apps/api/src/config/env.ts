@@ -14,6 +14,25 @@ const commaList = z
       .filter(Boolean),
   );
 
+/** Host names from a MongoDB connection string (supports multi-host seed lists). */
+export function mongoHosts(uri: string): string[] {
+  const rest = uri.replace(/^mongodb(\+srv)?:\/\//, "");
+  const authority = rest.split(/[/?]/, 1)[0] ?? "";
+  const hostList = authority.includes("@")
+    ? authority.slice(authority.lastIndexOf("@") + 1)
+    : authority;
+  return hostList
+    .split(",")
+    .map((host) => host.trim().replace(/:\d+$/, "").toLowerCase())
+    .filter(Boolean);
+}
+
+/** True when the connection string enables TLS (mongodb+srv defaults to TLS on). */
+export function mongoUsesTls(uri: string): boolean {
+  if (/[?&](tls|ssl)=false(&|$)/i.test(uri)) return false;
+  return /^mongodb\+srv:\/\//.test(uri) || /[?&](tls|ssl)=true(&|$)/i.test(uri);
+}
+
 export const envSchema = z
   .object({
     APP_ENV: z.enum(APP_ENVS),
@@ -23,15 +42,21 @@ export const envSchema = z
     LOG_LEVEL: z.enum(LOG_LEVELS).default("info"),
     RATE_LIMIT_PER_MINUTE: z.coerce.number().int().min(1).default(100),
     CORS_ORIGINS: commaList,
-    DATABASE_URL: z.string().refine((value) => /^mongodb(\+srv)?:\/\//.test(value), {
-      message: "must be a mongodb:// or mongodb+srv:// URL",
+    MONGODB_URI: z.string().regex(/^mongodb(\+srv)?:\/\/.+/, {
+      message: "must be a mongodb:// or mongodb+srv:// connection string",
     }),
+    MONGODB_DB: z.string().regex(/^[A-Za-z0-9_-]{1,63}$/, {
+      message: "must be 1-63 characters: letters, digits, underscore or hyphen",
+    }),
+    // OpenID Connect (any provider: Cognito, Auth0, Keycloak...). All three or none.
+    OIDC_ISSUER_URL: z.string().url().optional(),
+    OIDC_AUDIENCE: z.string().min(1).optional(),
+    OIDC_JWKS_URL: z.string().url().optional(),
   })
   .superRefine((env, ctx) => {
     const isDeployed = env.APP_ENV === "staging" || env.APP_ENV === "production";
 
-    // Environment isolation guards: a deployed environment must never run in dev mode
-    // or point at a local database.
+    // Environment isolation guards for deployed environments.
     if (isDeployed && env.NODE_ENV !== "production") {
       ctx.addIssue({
         code: "custom",
@@ -40,18 +65,48 @@ export const envSchema = z
       });
     }
 
-    if (isDeployed) {
-      try {
-        const host = new URL(env.DATABASE_URL).hostname;
-        if (LOCAL_HOSTS.has(host)) {
+    if (isDeployed && mongoHosts(env.MONGODB_URI).some((host) => LOCAL_HOSTS.has(host))) {
+      ctx.addIssue({
+        code: "custom",
+        path: ["MONGODB_URI"],
+        message: `must not point to a local database when APP_ENV is ${env.APP_ENV}`,
+      });
+    }
+
+    if (isDeployed && !mongoUsesTls(env.MONGODB_URI)) {
+      ctx.addIssue({
+        code: "custom",
+        path: ["MONGODB_URI"],
+        message: `must use TLS when APP_ENV is ${env.APP_ENV}`,
+      });
+    }
+
+    // Identity provider settings: required when deployed, all-or-nothing elsewhere.
+    const oidc = {
+      OIDC_ISSUER_URL: env.OIDC_ISSUER_URL,
+      OIDC_AUDIENCE: env.OIDC_AUDIENCE,
+      OIDC_JWKS_URL: env.OIDC_JWKS_URL,
+    };
+    const anyOidc = Object.values(oidc).some((value) => value !== undefined);
+    if (isDeployed || anyOidc) {
+      for (const [name, value] of Object.entries(oidc)) {
+        if (value === undefined) {
           ctx.addIssue({
             code: "custom",
-            path: ["DATABASE_URL"],
-            message: `must not point to a local database when APP_ENV is ${env.APP_ENV}`,
+            path: [name],
+            message: isDeployed
+              ? `is required when APP_ENV is ${env.APP_ENV}`
+              : "must be set together with the other OIDC_* variables",
           });
         }
-      } catch {
-        // Invalid URLs are already reported by the field validator.
+      }
+    }
+    if (isDeployed) {
+      for (const name of ["OIDC_ISSUER_URL", "OIDC_JWKS_URL"] as const) {
+        const value = env[name];
+        if (value !== undefined && !value.startsWith("https://")) {
+          ctx.addIssue({ code: "custom", path: [name], message: "must use https://" });
+        }
       }
     }
 
