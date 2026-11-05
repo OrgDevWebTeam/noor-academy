@@ -88,6 +88,15 @@ jobs:
           fetch-depth: 0 # scan full history, not just the tip
       - name: Install gitleaks
         run: |
-          curl -sSfL "https://github.com/gitleaks/gitleaks/releases/download/v${GITLEAKS_VERSION}/gitleaks_${GITLEAKS_VERSION}_linux_x64.tar.gz" | tar -xz gitleaks
+          set -euo pipefail
+          curl -sSfL --retry 5 --retry-delay 5 --retry-all-errors \
+            -o gitleaks.tar.gz \
+            "https://github.com/gitleaks/gitleaks/releases/download/v${GITLEAKS_VERSION}/gitleaks_${GITLEAKS_VERSION}_linux_x64.tar.gz"
+          curl -sSfL --retry 5 --retry-delay 5 --retry-all-errors \
+            -o checksums.txt \
+            "https://github.com/gitleaks/gitleaks/releases/download/v${GITLEAKS_VERSION}/gitleaks_${GITLEAKS_VERSION}_checksums.txt"
+          grep " gitleaks_${GITLEAKS_VERSION}_linux_x64.tar.gz\$" checksums.txt | sha256sum -c -
+          tar -xzf gitleaks.tar.gz gitleaks
+          sudo mv gitleaks /usr/local/bin/
       - name: Scan repository history
-        run: ./gitleaks git --redact --verbose .
+        run: gitleaks git --redact --verbose .
