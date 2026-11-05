@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>لا يوجد اتصال · No connection</title>
+    <style>
+      :root {
+        font-family: system-ui, sans-serif;
+      }
+      body {
+        margin: 0;
+        min-height: 100vh;
+        display: grid;
+        place-content: center;
+        gap: 2rem;
+        padding: 1.5rem;
+        background: #ffffff;
+        color: #18181b;
+      }
+      section {
+        max-width: 28rem;
+      }
+      h1 {
+        margin: 0 0 0.5rem;
+        font-size: 1.5rem;
+      }
+      p {
+        margin: 0 0 1rem;
+      }
+      a {
+        color: inherit;
+        font-weight: 600;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Shown by the service worker when a page cannot load. Holds no personal data. -->
+    <section lang="ar" dir="rtl">
+      <h1>لا يوجد اتصال بالإنترنت</h1>
+      <p>تأكّد من الاتصال، ثم حاول مرة أخرى.</p>
+      <a href="/">حاول مرة أخرى</a>
+    </section>
+    <section lang="en" dir="ltr">
+      <h1>You are offline</h1>
+      <p>Check your connection, then try again.</p>
+      <a href="/">Try again</a>
+    </section>
+  </body>
+</html>
