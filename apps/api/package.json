@@ -15,7 +15,8 @@
     "db:up": "docker compose -f ../../docker-compose.yml up -d --wait mongo",
     "db:down": "docker compose -f ../../docker-compose.yml down",
     "db:reset": "docker compose -f ../../docker-compose.yml down -v",
-    "test:integration": "vitest run --config vitest.integration.config.ts"
+    "test:integration": "vitest run --config vitest.integration.config.ts",
+    "dev:idp": "node scripts/dev-idp.mjs"
   },
   "dependencies": {
     "@noor/contracts": "workspace:*",

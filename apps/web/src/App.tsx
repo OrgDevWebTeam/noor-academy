@@ -1,4 +1,4 @@
-import { DEFAULT_LOCALE, LOCALES, textDirection, type Locale } from "@noor/contracts";
+import { DEFAULT_LOCALE, LOCALES, textDirection, type Locale } from "@noor/contracts/locale";
 import { useEffect, useState } from "react";
 
 /**

@@ -32,7 +32,6 @@ export async function up(db) {
     validationLevel: "strict",
     validationAction: "error",
   });
-
   const events = db.collection("audit_events");
   await events.createIndex({ occurredAt: -1 }, { name: "audit_occurred_at" });
   await events.createIndex(

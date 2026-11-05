@@ -5,12 +5,19 @@ import { defineConfig } from "vite";
 export default defineConfig({
   plugins: [react()],
   resolve: {
-    alias: {
-      // The browser consumes shared contracts as TypeScript source (no CommonJS build).
-      "@noor/contracts": fileURLToPath(
-        new URL("../../packages/contracts/src/index.ts", import.meta.url),
-      ),
-    },
+    alias: [
+      {
+        find: /^@noor\/contracts\/(.*)$/,
+        replacement:
+          fileURLToPath(new URL("../../packages/contracts/src/", import.meta.url)) + "$1",
+      },
+      {
+        find: /^@noor\/contracts$/,
+        replacement: fileURLToPath(
+          new URL("../../packages/contracts/src/index.ts", import.meta.url),
+        ),
+      },
+    ],
   },
   server: {
     port: 3000,
