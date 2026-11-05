@@ -1,436 +1,156 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "noor/recitation_result/2.0",
-  "title": "Noor normalized recitation result (aligned to Architecture v2.0 section 8.2)",
+  "$id": "noor/ai_result/3.0",
+  "title": "Noor AI result (contract v3.0, see docs/contracts/ai-result.md)",
+  "description": "Source of truth for the AI result. Change this first, then services/ai/app/schemas.py and packages/contracts/src/ai.ts in the same pull request.",
   "type": "object",
+  "additionalProperties": false,
   "required": [
-    "schema_version",
-    "attempt_id",
-    "surah",
-    "ayah",
-    "status",
-    "policy",
-    "models",
-    "telemetry"
+    "attemptId",
+    "model",
+    "modelVersion",
+    "decision",
+    "quality",
+    "findings",
+    "processingMs"
   ],
   "properties": {
-    "schema_version": {
-      "const": "2.0"
+    "attemptId": { "type": "string", "minLength": 1 },
+    "model": {
+      "type": "string",
+      "minLength": 1,
+      "description": "mock, quran-muaalem, whisper-quran, faster-whisper, combined, or none (API fallback)."
     },
-    "attempt_id": {
-      "type": "string"
+    "modelVersion": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Exact model revision, not just the package name (OPS-008)."
     },
-    "surah": {
-      "type": "integer",
-      "minimum": 1,
-      "maximum": 114
-    },
-    "ayah": {
-      "type": "integer",
-      "minimum": 1
-    },
-    "status": {
-      "enum": ["analysed", "quality_rejected", "model_unavailable", "unsupported_content"],
-      "description": "quality_rejected = not counted as an attempt (CRS FR-QUR-003 / VAL-014)."
-    },
-    "ayah_decision": {
-      "enum": ["accepted", "error", "uncertain"],
-      "description": "Required when status=analysed. Same vocabulary as per-finding decision."
-    },
-    "ayah_confidence": {
-      "type": "number",
-      "minimum": 0,
-      "maximum": 1,
-      "description": "Confidence that the whole ayah decision is right. Needed to tell 'accepted with high confidence' (CRS 5.3 rule 5) from 'no findings because unsure'."
-    },
-    "requires_teacher_review": {
-      "type": "boolean"
-    },
-    "policy": {
-      "type": "object",
-      "required": ["version", "level", "threshold", "threshold_status"],
-      "properties": {
-        "version": {
-          "type": "string"
-        },
-        "level": {
-          "enum": ["beginner", "intermediate", "advanced"]
-        },
-        "threshold": {
-          "type": "number",
-          "minimum": 0,
-          "maximum": 1
-        },
-        "threshold_status": {
-          "enum": ["provisional", "week4_measured", "week7_final"]
-        },
-        "stop_categories": {
-          "type": "array",
-          "items": {
-            "enum": ["memorization", "pronunciation", "tajweed"]
-          }
-        },
-        "moshaf": {
-          "type": "object",
-          "description": "quran-muaalem MoshafAttributes used to build the reference phonemes. Optional until decision 5.3 (madd lengths for children) is approved; required afterwards.",
-          "properties": {
-            "rewaya": {
-              "enum": ["hafs"]
-            },
-            "recitation_speed": {
-              "enum": ["mujawad", "above_murattal", "murattal", "hadr"]
-            },
-            "madd_monfasel_len": {
-              "enum": [2, 3, 4, 5]
-            },
-            "madd_mottasel_len": {
-              "enum": [4, 5, 6]
-            },
-            "madd_mottasel_waqf": {
-              "enum": [4, 5, 6]
-            },
-            "madd_aared_len": {
-              "enum": [2, 4, 6]
-            },
-            "aared_min_accepted_len": {
-              "enum": [2, 4, 6],
-              "description": "Noor post-filter (children leniency): shorter madd aared than this is reported, equal or longer is accepted."
-            }
-          },
-          "additionalProperties": false
-        }
-      }
-    },
-    "word_results": {
-      "type": "array",
-      "description": "One entry per reference word, including accepted ones (needed for false-accept measurement).",
-      "items": {
-        "type": "object",
-        "required": ["word_index", "decision", "confidence"],
-        "properties": {
-          "word_index": {
-            "type": "integer",
-            "minimum": 1
-          },
-          "decision": {
-            "enum": ["accepted", "error", "uncertain"]
-          },
-          "confidence": {
-            "type": "number",
-            "minimum": 0,
-            "maximum": 1
-          }
-        }
-      }
+    "decision": { "enum": ["accepted", "error", "uncertain"] },
+    "quality": {
+      "enum": ["ok", "silent", "too_short", "too_noisy"],
+      "description": "Anything but ok is a quality rejection: not an attempt (FR-QUR-003, VAL-014)."
     },
     "findings": {
       "type": "array",
-      "items": {
-        "type": "object",
-        "required": [
-          "word_index",
-          "category",
-          "code",
-          "model",
-          "model_version",
-          "confidence",
-          "decision",
-          "message_key"
-        ],
-        "properties": {
-          "word_index": {
-            "type": "integer",
-            "minimum": 1
-          },
-          "word_text": {
-            "type": "string"
-          },
-          "category": {
-            "enum": ["memorization", "pronunciation", "tajweed"]
-          },
-          "code": {
-            "pattern": "^ERR_(MEM|PRON|TAJ)_[A-Z_]+$"
-          },
-          "provider_code": {
-            "type": "string",
-            "description": "Raw model code kept for diagnostics only."
-          },
-          "model": {
-            "type": "string"
-          },
-          "model_version": {
-            "type": "string"
-          },
-          "confidence": {
-            "type": "number",
-            "minimum": 0,
-            "maximum": 1
-          },
-          "decision": {
-            "enum": ["accepted", "error", "uncertain"]
-          },
-          "stops_child": {
-            "type": "boolean"
-          },
-          "agreeing_models": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          },
-          "word_start_ms": {
-            "type": "integer",
-            "minimum": 0,
-            "description": "Segment of the REFERENCE recitation to replay."
-          },
-          "word_end_ms": {
-            "type": "integer",
-            "minimum": 0
-          },
-          "message_key": {
-            "type": "string",
-            "description": "Safe message key. Model text is never shown to the child."
-          },
-          "diagnostics": {
-            "type": "array",
-            "description": "Raw, phoneme-level evidence behind the word-level finding. For analysis and the Week-4 report only; never shown to the child.",
-            "items": {
-              "type": "object",
-              "properties": {
-                "speech_error_type": {
-                  "enum": ["insert", "delete", "replace"]
-                },
-                "expected_ph": {
-                  "type": ["string", "null"]
-                },
-                "predicted_ph": {
-                  "type": ["string", "null"]
-                },
-                "expected_len": {
-                  "type": ["number", "null"]
-                },
-                "predicted_len": {
-                  "type": ["number", "null"]
-                },
-                "rule": {
-                  "type": ["string", "null"],
-                  "description": "Tajweed rule name reported by the model, lowercase."
-                }
-              }
-            }
-          }
-        }
-      }
+      "items": { "$ref": "#/$defs/finding" }
     },
-    "models": {
-      "type": "array",
-      "minItems": 1,
-      "items": {
-        "type": "object",
-        "required": ["model", "model_version", "status", "inference_ms"],
-        "properties": {
-          "model": {
-            "type": "string"
-          },
-          "model_version": {
-            "type": "string",
-            "description": "Model revision/hash, not just the python package name."
-          },
-          "package_version": {
-            "type": "string"
-          },
-          "status": {
-            "enum": ["ok", "timeout", "error", "disabled_by_kill_switch"]
-          },
-          "inference_ms": {
-            "type": "integer",
-            "minimum": 0
-          }
-        }
-      }
-    },
-    "telemetry": {
-      "type": "object",
-      "required": ["audio_seconds", "queue_wait_ms", "pipeline_ms", "quality_gate", "evaluated_at"],
-      "properties": {
-        "audio_seconds": {
-          "type": "number",
-          "minimum": 0
-        },
-        "queue_wait_ms": {
-          "type": "integer",
-          "minimum": 0
-        },
-        "pipeline_ms": {
-          "type": "integer",
-          "minimum": 0
-        },
-        "device": {
-          "type": "string"
-        },
-        "gpu_peak_mem_mb": {
-          "type": "integer",
-          "minimum": 0
-        },
-        "reference_id": {
-          "type": "string",
-          "description": "Reciter + timing-file version used as reference."
-        },
-        "word_retry_count": {
-          "type": "integer",
-          "minimum": 0,
-          "description": "Input to the escalate-after-2-retries rule, if approved."
-        },
-        "quality_gate": {
-          "type": "object",
-          "required": ["passed"],
-          "properties": {
-            "passed": {
-              "type": "boolean"
-            },
-            "reason": {
-              "enum": ["no_speech", "high_noise", "too_short", "too_long", "clipped"],
-              "description": "too_long = audio longer than the engine max_audio_seconds (default 15 s; the longest reference ayah, Al-Fatiha 7, is 12.8 s)."
-            },
-            "speech_ratio": {
-              "type": "number"
-            }
-          }
-        },
-        "evaluated_at": {
-          "type": "string",
-          "format": "date-time"
-        }
-      }
-    }
+    "processingMs": { "type": "integer", "minimum": 0 }
   },
   "allOf": [
     {
+      "description": "A quality rejection is always uncertain with no findings.",
       "if": {
-        "properties": {
-          "status": {
-            "const": "analysed"
-          }
-        }
+        "properties": { "quality": { "not": { "const": "ok" } } }
       },
       "then": {
-        "required": [
-          "ayah_decision",
-          "ayah_confidence",
-          "requires_teacher_review",
-          "word_results",
-          "findings"
-        ]
+        "properties": {
+          "decision": { "const": "uncertain" },
+          "findings": { "maxItems": 0 }
+        }
       }
     }
   ],
-  "not": {
-    "required": ["child_id"]
+  "$defs": {
+    "finding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "wordIndex",
+        "category",
+        "code",
+        "confidence",
+        "wordStartMs",
+        "wordEndMs",
+        "messageKey"
+      ],
+      "properties": {
+        "wordIndex": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "1 = first word of the ayah (same as position in the reference files)."
+        },
+        "category": { "enum": ["memorization", "pronunciation", "tajweed", "technical"] },
+        "code": {
+          "enum": [
+            "ERR_MEM_OMISSION",
+            "ERR_MEM_SUBSTITUTION",
+            "ERR_MEM_INSERTION",
+            "ERR_PRON_LETTER_SUB",
+            "ERR_PRON_HARAKA",
+            "ERR_PRON_MADD_ASLI_SHORT",
+            "ERR_TAJ_MADD_SHORT",
+            "ERR_TAJ_GHONNA_OMIT",
+            "ERR_TAJ_QALQALA_OMIT",
+            "ERR_TAJ_UNMAPPED",
+            "ERR_TECH_MODELS_DISAGREE"
+          ]
+        },
+        "confidence": { "type": "number", "minimum": 0, "maximum": 1 },
+        "wordStartMs": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Start of the word in the REFERENCE recitation, for replay."
+        },
+        "wordEndMs": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "End of the word in the reference recitation. Not before wordStartMs (checked in code)."
+        },
+        "messageKey": {
+          "type": "string",
+          "pattern": "^FEEDBACK_[A-Z_]+$",
+          "description": "Key in safe_messages_v1_1.json. Model text is never shown to the child."
+        }
+      },
+      "allOf": [
+        {
+          "if": { "properties": { "category": { "const": "memorization" } } },
+          "then": { "properties": { "code": { "pattern": "^ERR_MEM_" } } }
+        },
+        {
+          "if": { "properties": { "category": { "const": "pronunciation" } } },
+          "then": { "properties": { "code": { "pattern": "^ERR_PRON_" } } }
+        },
+        {
+          "if": { "properties": { "category": { "const": "tajweed" } } },
+          "then": { "properties": { "code": { "pattern": "^ERR_TAJ_" } } }
+        },
+        {
+          "if": { "properties": { "category": { "const": "technical" } } },
+          "then": { "properties": { "code": { "pattern": "^ERR_TECH_" } } }
+        }
+      ]
+    }
   },
   "examples": [
     {
-      "schema_version": "2.0",
-      "attempt_id": "att_fatiha_001_xyz",
-      "surah": 1,
-      "ayah": 1,
-      "status": "analysed",
-      "ayah_decision": "error",
-      "ayah_confidence": 0.88,
-      "requires_teacher_review": false,
-      "policy": {
-        "version": "policy-0.1",
-        "level": "beginner",
-        "threshold": 0.7,
-        "threshold_status": "provisional",
-        "stop_categories": ["memorization"],
-        "moshaf": {
-          "rewaya": "hafs",
-          "recitation_speed": "murattal",
-          "madd_monfasel_len": 4,
-          "madd_mottasel_len": 4,
-          "madd_mottasel_waqf": 4,
-          "madd_aared_len": 4,
-          "aared_min_accepted_len": 2
-        }
-      },
-      "word_results": [
-        {
-          "word_index": 1,
-          "decision": "accepted",
-          "confidence": 0.96
-        },
-        {
-          "word_index": 2,
-          "decision": "accepted",
-          "confidence": 0.94
-        },
-        {
-          "word_index": 3,
-          "decision": "error",
-          "confidence": 0.88
-        },
-        {
-          "word_index": 4,
-          "decision": "accepted",
-          "confidence": 0.95
-        }
-      ],
+      "attemptId": "6650f0c2a1b2c3d4e5f60002",
+      "model": "mock",
+      "modelVersion": "0.2",
+      "decision": "error",
+      "quality": "ok",
       "findings": [
         {
-          "word_index": 3,
-          "word_text": "ٱلرَّحْمَٰنِ",
-          "category": "pronunciation",
-          "code": "ERR_PRON_LETTER_SUB",
-          "provider_code": "phoneme_sub",
-          "model": "quran-muaalem",
-          "model_version": "obadx/muaalem-model-v3_2",
-          "confidence": 0.88,
-          "decision": "error",
-          "stops_child": false,
-          "agreeing_models": ["quran-muaalem"],
-          "word_start_ms": 2300,
-          "word_end_ms": 3950,
-          "message_key": "FEEDBACK_LISTEN_AND_REPEAT_WORD",
-          "diagnostics": [
-            {
-              "speech_error_type": "replace",
-              "expected_ph": "EXAMPLE",
-              "predicted_ph": "EXAMPLE",
-              "expected_len": null,
-              "predicted_len": null,
-              "rule": null
-            }
-          ]
+          "wordIndex": 1,
+          "category": "memorization",
+          "code": "ERR_MEM_SUBSTITUTION",
+          "confidence": 0.92,
+          "wordStartMs": 0,
+          "wordEndMs": 600,
+          "messageKey": "FEEDBACK_WORD_DIFFERENT"
         }
       ],
-      "models": [
-        {
-          "model": "quran-muaalem",
-          "model_version": "obadx/muaalem-model-v3_2",
-          "status": "ok",
-          "inference_ms": 320
-        },
-        {
-          "model": "whisper-quran",
-          "model_version": "tarteel-ai/whisper-base-ar-quran",
-          "status": "ok",
-          "inference_ms": 410
-        }
-      ],
-      "telemetry": {
-        "audio_seconds": 5.4,
-        "queue_wait_ms": 40,
-        "pipeline_ms": 780,
-        "device": "cuda",
-        "gpu_peak_mem_mb": 1900,
-        "reference_id": "reader-TBD@timings-v0",
-        "word_retry_count": 0,
-        "quality_gate": {
-          "passed": true,
-          "speech_ratio": 0.82
-        },
-        "evaluated_at": "2026-11-03T20:15:00Z"
-      }
+      "processingMs": 15
+    },
+    {
+      "attemptId": "6650f0c2a1b2c3d4e5f60004",
+      "model": "mock",
+      "modelVersion": "0.2",
+      "decision": "uncertain",
+      "quality": "too_short",
+      "findings": [],
+      "processingMs": 3
     }
   ]
 }

@@ -16,7 +16,8 @@ Checks
   text    : 25 ayat, positions 1..n, text_uthmani == words joined by a space, no digits/latin characters
   timings : words match the text file, start=0, end=total, no overlaps  [integrity]
             every ayah present, boundaries not all on a 50 ms grid, pauses between words  [completeness]
-  result  : word_text in a result file equals the reference word exactly (alif-wasla/marks differences are reported)
+  result  : word_text in a result file equals the reference word exactly (alif-wasla/marks differences are reported).
+            Findings without word_text (contract v3) are skipped.
 """
 import json, re, sys, unicodedata
 
@@ -67,7 +68,8 @@ def check(text_p, tim_p, res_p=None):
         r = json.load(open(res_p, encoding="utf-8"))
         k = (r.get("surah", r.get("surah_id")), r.get("ayah", r.get("ayah_id")))
         for f in r.get("findings", []):
-            i = f.get("word_index", f.get("word_position")); ref = T[k][i - 1]
+            if "word_text" not in f: continue  # contract v3 results carry wordIndex only, no word text
+            i = f.get("wordIndex", f.get("word_index", f.get("word_position"))); ref = T[k][i - 1]
             if f.get("word_text") != ref:
                 if unicodedata.normalize("NFC", f["word_text"]) == unicodedata.normalize("NFC", ref):
                     tag = "canonically equivalent: only the ORDER of combining marks differs (e.g. shadda/fatha); copy word_text from the reference file, do not retype it"
