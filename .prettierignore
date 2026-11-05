@@ -5,3 +5,5 @@ dist
 coverage
 pnpm-lock.yaml
 .vs
+.venv
+.pytest_cache

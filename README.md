@@ -12,6 +12,7 @@ Modular monolith monorepo for the Noor Academy prototype (Target Architecture v1
 | `packages/contracts` | Shared types and schemas (locales, API version, environments) |
 | `packages/ui`        | Bilingual/RTL UI primitives and design tokens                 |
 | `packages/config`    | Shared TypeScript presets                                     |
+| `services/ai`        | Python AI service (FastAPI): recitation and Arabic word check |
 | `infra`              | Infrastructure as code (Terraform/OpenTofu)                   |
 | `docs/adr`           | Architecture decision records                                 |
 
