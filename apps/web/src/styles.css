@@ -1,0 +1,31 @@
+@import "tailwindcss";
+@import "@noor/ui/styles.css";
+
+/*
+ * Open-licensed (OFL) placeholders until the design system picks the final fonts. They ship with
+ * the app, so browsers never contact a font host. A page downloads only the files its text uses.
+ */
+@import "@fontsource/ibm-plex-sans-arabic/400.css";
+@import "@fontsource/ibm-plex-sans-arabic/600.css";
+@import "@fontsource-variable/ibm-plex-sans/wght.css";
+
+/* Tailwind only scans this app by default; the UI primitives live in packages/ui. */
+@source "../../../packages/ui/src";
+
+@theme inline {
+  --font-sans: var(--font-ui), system-ui, sans-serif;
+}
+
+:root {
+  --font-ui: "IBM Plex Sans Variable";
+}
+
+/* Also has Latin letters, so English words and digits inside Arabic text match. */
+:root[lang="ar"] {
+  --font-ui: "IBM Plex Sans Arabic";
+}
+
+body {
+  background: var(--noor-surface);
+  color: var(--noor-ink);
+}

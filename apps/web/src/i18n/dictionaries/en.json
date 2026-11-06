@@ -1,0 +1,36 @@
+{
+  "meta": {
+    "title": "Noor Academy",
+    "description": "A personalized growth platform for Muslim children."
+  },
+  "landing": {
+    "title": "Noor Academy",
+    "subtitle": "A personalized growth platform for Muslim children."
+  },
+  "screens": {
+    "signIn": "Sign in",
+    "profiles": "Choose a profile",
+    "today": "Today",
+    "parentHome": "Home",
+    "reviewQueue": "Review queue",
+    "contentAdmin": "Content management"
+  },
+  "placeholder": "This screen is being built.",
+  "languageSwitcher": {
+    "label": "Language"
+  },
+  "notFound": {
+    "title": "Page not found",
+    "body": "The page you are looking for does not exist.",
+    "home": "Back to home"
+  },
+  "accessDenied": {
+    "title": "This page is not available",
+    "body": "Your account cannot open this page.",
+    "home": "Back to home"
+  },
+  "maintenance": {
+    "title": "We will be back soon",
+    "body": "Noor Academy is being updated. Please try again a little later."
+  }
+}
