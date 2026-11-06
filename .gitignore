@@ -41,3 +41,5 @@ datasets/
 *.mp3
 *.flac
 *.ogg
+
+*.log
