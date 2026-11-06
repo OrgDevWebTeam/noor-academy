@@ -1,0 +1,107 @@
+name: Deploy
+
+# Staging: automatic on every merge to main.
+# Production: manual only, needs approval from a required reviewer (GitHub Environment
+# "production"), and deploys an image that was already built and tested on main.
+# Rollback: run this workflow again with an older image tag.
+# Never triggered by pull requests, so forks can never reach secrets.
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: Target environment
+        type: choice
+        options: [staging, production]
+        default: staging
+      image_tag:
+        description: Image tag to deploy (a full commit SHA). An older SHA rolls back.
+        required: true
+        type: string
+
+concurrency:
+  group: deploy-${{ github.event_name == 'push' && 'staging' || inputs.environment }}
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+env:
+  IMAGE_NAME: noor-api
+
+jobs:
+  build-image:
+    name: Build and publish image
+    if: github.event_name == 'push'
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build and push to GitHub Container Registry
+        env:
+          REGISTRY_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          ACTOR: ${{ github.actor }}
+        run: |
+          IMAGE="ghcr.io/${GITHUB_REPOSITORY_OWNER,,}/${IMAGE_NAME}"
+          docker build -f apps/api/Dockerfile -t "$IMAGE:${GITHUB_SHA}" .
+          echo "$REGISTRY_TOKEN" | docker login ghcr.io -u "$ACTOR" --password-stdin
+          docker push "$IMAGE:${GITHUB_SHA}"
+
+  deploy-staging:
+    name: Deploy to staging
+    needs: build-image
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    environment: staging
+    steps:
+      - name: Deploy
+        env:
+          DEPLOY_TARGET: ${{ vars.DEPLOY_TARGET }}
+        run: |
+          if [ -z "$DEPLOY_TARGET" ]; then
+            echo "::notice title=No deploy target::Image ${GITHUB_SHA} is published. Set the DEPLOY_TARGET variable and add the deploy step when a host is chosen (see docs/DEPLOYMENT.md)."
+            exit 0
+          fi
+          echo "::error::DEPLOY_TARGET is set to '$DEPLOY_TARGET' but no deploy command is implemented yet."
+          exit 1
+
+  deploy-manual:
+    name: Deploy ${{ inputs.environment }}
+    if: github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    # Production waits here for a required reviewer to approve.
+    environment: ${{ inputs.environment }}
+    permissions:
+      contents: read
+      packages: read
+    steps:
+      - name: Check the image exists
+        env:
+          REGISTRY_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          ACTOR: ${{ github.actor }}
+          IMAGE_TAG: ${{ inputs.image_tag }}
+        run: |
+          if ! [[ "$IMAGE_TAG" =~ ^[0-9a-f]{40}$ ]]; then
+            echo "::error::image_tag must be a full 40-character commit SHA"
+            exit 1
+          fi
+          IMAGE="ghcr.io/${GITHUB_REPOSITORY_OWNER,,}/${IMAGE_NAME}"
+          echo "$REGISTRY_TOKEN" | docker login ghcr.io -u "$ACTOR" --password-stdin
+          docker manifest inspect "$IMAGE:$IMAGE_TAG" > /dev/null
+
+      - name: Deploy
+        env:
+          DEPLOY_TARGET: ${{ vars.DEPLOY_TARGET }}
+        run: |
+          if [ -z "$DEPLOY_TARGET" ]; then
+            echo "::notice title=No deploy target::Approved, but there is no host to deploy to yet (see docs/DEPLOYMENT.md)."
+            exit 0
+          fi
+          echo "::error::DEPLOY_TARGET is set to '$DEPLOY_TARGET' but no deploy command is implemented yet."
+          exit 1
