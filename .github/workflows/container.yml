@@ -1,0 +1,57 @@
+name: Container
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+concurrency:
+  group: container-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    name: Container build
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build image
+        run: docker build -f apps/api/Dockerfile -t noor-api:ci .
+
+      - name: Runs and answers health checks
+        run: |
+          docker run -d --name api -p 4000:4000 \
+            -e APP_ENV=local \
+            -e MONGODB_URI="mongodb://127.0.0.1:1/?directConnection=true" \
+            -e MONGODB_DB=ci \
+            -e LOG_LEVEL=warn \
+            noor-api:ci
+          ok=0
+          for i in $(seq 1 30); do
+            if curl -fsS http://127.0.0.1:4000/v1/health; then ok=1; break; fi
+            sleep 1
+          done
+          docker logs api
+          [ "$ok" = "1" ]
+
+      - name: Protected routes refuse anonymous requests
+        run: |
+          code=$(curl -s -o /dev/null -w "%{http_code}" http://127.0.0.1:4000/v1/me)
+          echo "GET /v1/me -> $code"
+          [ "$code" = "401" ]
+
+      - name: Production refuses an unsafe configuration
+        run: |
+          # Local database, no TLS and no identity provider: the app must refuse to start.
+          if docker run --rm \
+            -e APP_ENV=production -e NODE_ENV=production \
+            -e MONGODB_URI="mongodb://127.0.0.1:27017/" -e MONGODB_DB=x \
+            noor-api:ci; then
+            echo "The container started with an unsafe production configuration"
+            exit 1
+          fi
