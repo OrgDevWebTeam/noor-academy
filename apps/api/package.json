@@ -13,6 +13,7 @@
     "migrate": "node --env-file=../../.env scripts/migrate.mjs up",
     "migrate:down": "node --env-file=../../.env scripts/migrate.mjs down",
     "db:up": "docker compose -f ../../docker-compose.yml up -d --wait mongo",
+    "services:up": "docker compose -f ../../docker-compose.yml up -d --wait --build mongo ai",
     "db:down": "docker compose -f ../../docker-compose.yml down",
     "db:reset": "docker compose -f ../../docker-compose.yml down -v",
     "test:integration": "vitest run --config vitest.integration.config.ts",
@@ -26,6 +27,7 @@
     "helmet": "^8.3.0",
     "jose": "^6.2.15",
     "mongodb": "^7.8.0",
+    "multer": "^2.0.2",
     "pino": "^10.4.0",
     "pino-http": "^11.0.0",
     "zod": "^4.6.7"
@@ -34,6 +36,7 @@
     "@noor/config": "workspace:*",
     "@types/cors": "^2.8.19",
     "@types/express": "^5.0.6",
+    "@types/multer": "^2.3.0",
     "@types/node": "catalog:",
     "@types/supertest": "^7.2.1",
     "supertest": "^7.3.1",

@@ -32,7 +32,7 @@ pnpm check                      # format, lint, typecheck, test, build
 ## Run locally
 
 ```bash
-pnpm --filter @noor/api db:up          # MongoDB (Docker)
+pnpm --filter @noor/api services:up    # MongoDB + mock AI service (Docker)
 pnpm --filter @noor/api migrate        # create collections
 pnpm --filter @noor/api start:local    # API on http://127.0.0.1:4000
 pnpm --filter @noor/web dev            # web on http://localhost:3000

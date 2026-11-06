@@ -12,6 +12,12 @@ describe("permissions", () => {
     expect(hasPermission(["teacher"], "child:create")).toBe(false);
   });
 
+  it("lets only parents create recitation attempts", () => {
+    expect(hasPermission(["parent"], "attempt:create")).toBe(true);
+    expect(hasPermission(["teacher"], "attempt:create")).toBe(false);
+    expect(hasPermission(["platform_admin"], "attempt:create")).toBe(false);
+  });
+
   it("keeps admins away from child data by default", () => {
     expect(hasPermission(["platform_admin"], "child:read")).toBe(false);
     expect(hasPermission(["content_admin"], "child:read")).toBe(false);

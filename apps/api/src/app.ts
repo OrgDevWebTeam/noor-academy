@@ -3,6 +3,9 @@ import cors from "cors";
 import express, { type Express } from "express";
 import helmet from "helmet";
 import { adminRouter } from "./admin/admin.router.js";
+import { type AiClient, createAiClient } from "./ai/ai-client.js";
+import { createAttemptsRepository } from "./attempts/attempts.repository.js";
+import { attemptsRouter } from "./attempts/attempts.router.js";
 import { createAuditLog } from "./audit/audit.js";
 import { authenticate } from "./auth/middleware.js";
 import type { TokenVerifier } from "./auth/types.js";
@@ -22,10 +25,12 @@ export interface AppDeps {
   env: Env;
   database: Pick<Database, "ping" | "db">;
   verifier: TokenVerifier;
+  /** Defaults to the HTTP client for AI_SERVICE_URL; tests pass a fake. */
+  ai?: AiClient;
 }
 
 /** Builds the Express app without listening, so tests can drive it with supertest. */
-export function createApp({ env, database, verifier }: AppDeps): Express {
+export function createApp({ env, database, verifier, ai }: AppDeps): Express {
   const app = express();
 
   app.disable("x-powered-by");
@@ -50,10 +55,16 @@ export function createApp({ env, database, verifier }: AppDeps): Express {
   const auth = authenticate({ verifier, users: createUsersRepository(db) });
   const audit = createAuditLog(db);
   app.use(`${v1}/me`, auth, meRouter());
+  const children = createChildrenRepository(db);
+  app.use(`${v1}/children`, auth, childrenRouter({ children, audit }));
   app.use(
-    `${v1}/children`,
+    `${v1}/attempts`,
     auth,
-    childrenRouter({ children: createChildrenRepository(db), audit }),
+    attemptsRouter({
+      attempts: createAttemptsRepository(db),
+      children,
+      ai: ai ?? createAiClient({ baseUrl: env.AI_SERVICE_URL, timeoutMs: env.AI_TIMEOUT_MS }),
+    }),
   );
   app.use(`${v1}/admin`, auth, adminRouter());
 

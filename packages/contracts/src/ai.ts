@@ -1,3 +1,5 @@
+import { z } from "zod";
+
 /**
  * AI result contract v3.0 (docs/contracts/ai-result.md).
  * Source of truth: schemas/recitation_result.schema.json. ai.test.ts fails if these drift from it.
@@ -67,3 +69,42 @@ export const aiFallbackResult = (attemptId: string, processingMs: number): AiRes
   findings: [],
   processingMs,
 });
+
+const CATEGORY_PREFIX: Record<AiCategory, string> = {
+  memorization: "ERR_MEM_",
+  pronunciation: "ERR_PRON_",
+  tajweed: "ERR_TAJ_",
+  technical: "ERR_TECH_",
+};
+
+export const aiFindingSchema = z
+  .object({
+    wordIndex: z.number().int().min(1),
+    category: z.enum(AI_CATEGORIES),
+    code: z.enum(AI_ERROR_CODES),
+    confidence: z.number().min(0).max(1),
+    wordStartMs: z.number().int().min(0),
+    wordEndMs: z.number().int().min(0),
+    messageKey: z.string().regex(/^FEEDBACK_[A-Z_]+$/),
+  })
+  .strict()
+  .refine((f) => f.code.startsWith(CATEGORY_PREFIX[f.category]), {
+    message: "code does not match category",
+  })
+  .refine((f) => f.wordEndMs >= f.wordStartMs, { message: "wordEndMs is before wordStartMs" });
+
+/** The one zod check the API runs on every AI service response (Architecture 8.3). */
+export const aiResultSchema = z
+  .object({
+    attemptId: z.string().min(1),
+    model: z.string().min(1),
+    modelVersion: z.string().min(1),
+    decision: z.enum(AI_DECISIONS),
+    quality: z.enum(AI_QUALITIES),
+    findings: z.array(aiFindingSchema),
+    processingMs: z.number().int().min(0),
+  })
+  .strict()
+  .refine((r) => r.quality === "ok" || (r.decision === "uncertain" && r.findings.length === 0), {
+    message: "a quality rejection must be uncertain with no findings",
+  });
