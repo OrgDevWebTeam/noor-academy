@@ -48,6 +48,9 @@ export const envSchema = z
     MONGODB_DB: z.string().regex(/^[A-Za-z0-9_-]{1,63}$/, {
       message: "must be 1-63 characters: letters, digits, underscore or hyphen",
     }),
+    // Internal AI service (Architecture 8.1). Never exposed to browsers.
+    AI_SERVICE_URL: z.string().url().default("http://127.0.0.1:8000"),
+    AI_TIMEOUT_MS: z.coerce.number().int().min(100).max(60_000).default(20_000),
     // OpenID Connect (any provider: Cognito, Auth0, Keycloak...). All three or none.
     OIDC_ISSUER_URL: z.string().url().optional(),
     OIDC_AUDIENCE: z.string().min(1).optional(),
