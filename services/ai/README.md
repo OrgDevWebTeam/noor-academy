@@ -27,6 +27,15 @@ Then open http://localhost:8000/health or http://localhost:8000/docs.
 
 ## Run with Docker
 
+The easiest way is Docker Compose from the repo root. It starts MongoDB and this service in mock
+mode on `127.0.0.1:8000`, which is the API's default `AI_SERVICE_URL`:
+
+```bash
+docker compose up -d --wait
+```
+
+Or on its own:
+
 ```bash
 cd services/ai
 docker build -t noor-ai .
