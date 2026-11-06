@@ -1,6 +1,9 @@
 import { z } from "zod";
 import { LOCALES } from "./locale";
-import { identifierSchema } from "./recitation";
+
+/** Format for provider ids and error codes. */
+export const IDENTIFIER_PATTERN = /^[a-z0-9][a-z0-9_.-]{0,63}$/;
+export const identifierSchema = z.string().regex(IDENTIFIER_PATTERN);
 
 /**
  * Evaluation telemetry: one event per AI evaluation, for quality and cost monitoring.

@@ -13,7 +13,6 @@
 # /packages/ui/              @QUSSAI-USERNAME @ISMAIL-USERNAME
 #
 # AI provider abstraction + telemetry      (Qussai)
-# /packages/ai-provider/     @QUSSAI-USERNAME
 # /packages/contracts/src/telemetry*      @QUSSAI-USERNAME
 #
 # Quran audio schema + dataset             (Ismail)

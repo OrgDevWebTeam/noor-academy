@@ -1,9 +1,13 @@
 # ADR-0004: AI provider boundary
 
-- Status: Proposed (owners: Qussai, Ismail)
+- Status: Superseded in part (owners: Qussai, Ismail). The `AiProvider` interface and
+  `packages/ai-provider` were removed: the API now calls the Python AI service (`services/ai`) and
+  checks every reply against AI result contract v3.0 (`docs/contracts/ai-result.md`). The privacy
+  rules below still apply.
 - Context: AI evaluates children's Quran recitation. The repo is public and the data is sensitive.
 - Decisions (proposed):
-  - All model access goes through the `AiProvider` interface; providers are swappable.
+  - ~~All model access goes through the `AiProvider` interface~~ (replaced by the AI service and
+    contract v3.0; models are swapped inside `services/ai/app/adapters/`).
   - **No child identity** (id, family id, name) crosses the boundary. Evaluations use an opaque
     `evaluationId`. Enforced by strict schemas and tests.
   - Audio is passed by opaque reference, never inline or as a public URL.
