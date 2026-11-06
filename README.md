@@ -4,16 +4,15 @@ MERN monorepo for the Noor Academy prototype: MongoDB, Express, React, Node.js (
 
 ## Layout
 
-| Path                   | Purpose                                                   |
-| ---------------------- | --------------------------------------------------------- |
-| `apps/web`             | React (Vite) PWA, bilingual, RTL/LTR                      |
-| `apps/api`             | Express API                                               |
-| `packages/contracts`   | Shared types and schemas (locales, recitation, telemetry) |
-| `packages/ai-provider` | AI provider interface, stub provider, telemetry wrapper   |
-| `packages/ui`          | Bilingual/RTL UI primitives and design tokens             |
-| `packages/config`      | Shared TypeScript presets                                 |
-| `infra`                | Infrastructure as code                                    |
-| `docs`                 | ADRs, environments, workstreams, AI and data specs        |
+| Path                 | Purpose                                                  |
+| -------------------- | -------------------------------------------------------- |
+| `apps/web`           | React (Vite) PWA, bilingual, RTL/LTR                     |
+| `apps/api`           | Express API                                              |
+| `packages/contracts` | Shared types and schemas (locales, AI result, telemetry) |
+| `packages/ui`        | Bilingual/RTL UI primitives and design tokens            |
+| `packages/config`    | Shared TypeScript presets                                |
+| `infra`              | Infrastructure as code                                   |
+| `docs`               | ADRs, environments, workstreams, AI and data specs       |
 
 ## Prerequisites
 
