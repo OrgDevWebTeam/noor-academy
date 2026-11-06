@@ -48,7 +48,9 @@ jobs:
           ACTOR: ${{ github.actor }}
         run: |
           IMAGE="ghcr.io/${GITHUB_REPOSITORY_OWNER,,}/${IMAGE_NAME}"
-          docker build -f apps/api/Dockerfile -t "$IMAGE:${GITHUB_SHA}" .
+          docker build -f apps/api/Dockerfile \
+            --label "org.opencontainers.image.source=https://github.com/${GITHUB_REPOSITORY}" \
+            -t "$IMAGE:${GITHUB_SHA}" .
           echo "$REGISTRY_TOKEN" | docker login ghcr.io -u "$ACTOR" --password-stdin
           docker push "$IMAGE:${GITHUB_SHA}"
 
