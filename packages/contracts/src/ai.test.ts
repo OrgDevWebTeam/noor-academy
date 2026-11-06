@@ -1,7 +1,14 @@
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
-import { AI_CATEGORIES, AI_DECISIONS, AI_ERROR_CODES, AI_QUALITIES, aiFallbackResult } from "./ai";
+import {
+  AI_CATEGORIES,
+  AI_DECISIONS,
+  AI_ERROR_CODES,
+  AI_QUALITIES,
+  aiFallbackResult,
+  aiResultSchema,
+} from "./ai";
 
 const schemasDir = join(__dirname, "..", "schemas");
 const readJson = (file: string) => JSON.parse(readFileSync(join(schemasDir, file), "utf8"));
@@ -37,6 +44,32 @@ describe("message keys used in the schema examples exist in safe_messages", () =
     );
     for (const key of keys) {
       expect(messages[key], key).toBeDefined();
+    }
+  });
+});
+
+describe("aiResultSchema (the API-side zod check)", () => {
+  it("accepts every example in the JSON schema and the fallback result", () => {
+    for (const example of schema.examples) {
+      expect(aiResultSchema.safeParse(example).success).toBe(true);
+    }
+    expect(aiResultSchema.safeParse(aiFallbackResult("a1", 5)).success).toBe(true);
+  });
+
+  it("rejects what the JSON schema rejects", () => {
+    const good = schema.examples[0];
+    const bad = [
+      { ...good, extra: 1 },
+      { ...good, decision: "maybe" },
+      { ...good, processingMs: -1 },
+      { ...good, findings: [{ ...good.findings[0], wordIndex: 0 }] },
+      { ...good, findings: [{ ...good.findings[0], code: "ERR_TAJ_MADD_SHORT" }] },
+      { ...good, findings: [{ ...good.findings[0], wordStartMs: 700, wordEndMs: 600 }] },
+      { ...good, findings: [{ ...good.findings[0], messageKey: "free text" }] },
+      { ...good, quality: "silent" },
+    ];
+    for (const value of bad) {
+      expect(aiResultSchema.safeParse(value).success).toBe(false);
     }
   });
 });

@@ -14,6 +14,7 @@ export const PERMISSIONS = [
   "child:create",
   "child:read",
   "child:pin:manage",
+  "attempt:create",
   "content:manage",
   "user:manage",
   "assignment:manage",
@@ -23,7 +24,8 @@ export type Permission = (typeof PERMISSIONS)[number];
 
 // Least privilege: admins manage the platform but cannot read children's data by default.
 export const ROLE_PERMISSIONS: Record<Role, readonly Permission[]> = {
-  parent: ["child:create", "child:read", "child:pin:manage"],
+  // The child records on the parent's device, so the parent session creates attempts.
+  parent: ["child:create", "child:read", "child:pin:manage", "attempt:create"],
   teacher: ["child:read"],
   content_admin: ["content:manage"],
   platform_admin: ["user:manage", "assignment:manage", "audit:read"],
