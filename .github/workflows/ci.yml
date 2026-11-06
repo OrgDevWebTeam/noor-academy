@@ -84,6 +84,11 @@ jobs:
       - name: Test
         run: pytest
 
+      # The 25 prototype ayat: Quran text and the reference reciter's word timings (strict mode)
+      - name: Reference data
+        working-directory: packages/contracts/data
+        run: python validate_reference_data.py reference_quran_text.json reference_word_timings.json
+
   audit:
     name: Dependency audit
     runs-on: ubuntu-latest
