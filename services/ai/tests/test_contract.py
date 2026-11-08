@@ -42,7 +42,7 @@ def test_every_message_key_exists_in_safe_messages():
         assert message_key in MESSAGES, message_key
 
 
-@pytest.mark.parametrize("ayah, size", [(1, 2000), (3, 2000), (5, 2000), (1, 10)])
+@pytest.mark.parametrize("ayah, size", [(1, 2000), (3, 2000), (5, 2000), (7, 2000), (1, 10)])
 def test_mock_results_pass_the_json_schema(ayah, size):
     response = client.post(
         "/v1/recitation/analyze",

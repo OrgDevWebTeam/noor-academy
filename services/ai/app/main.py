@@ -1,24 +1,20 @@
 # The AI service (internal HTTP only, never called by browsers). Owner: Qussai.
 # Run: uvicorn app.main:app --port 8000
 # Contract: docs/contracts/ai-result.md
-import os
 import time
 
 from fastapi import FastAPI, File, Form, UploadFile
 from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse
 
-from app.mock import MOCK_MODEL, MOCK_VERSION, mock_arabic_word, mock_recitation
+from app.adapters import is_mock_mode, recitation_adapters
+from app.mock import MOCK_MODEL, MOCK_VERSION, mock_arabic_word, mock_quality
+from app.pipeline import model_label, run_recitation
 from app.schemas import AnalysisResult, Level
 
 MAX_AUDIO_BYTES = 5 * 1024 * 1024  # 5 MB, same limit as the API (VAL-016)
 
 app = FastAPI(title="Noor AI service")
-
-
-def is_mock_mode():
-    # Read every time, so tests can switch it
-    return os.environ.get("MOCK_MODE", "true").lower() == "true"
 
 
 def error_response(status, code, message):
@@ -52,15 +48,31 @@ async def analyze_recitation(
     level: Level = Form(...),
 ):
     started = time.perf_counter()
-    if not is_mock_mode():
-        # TODO(week 2, Qussai): quality gate (app/quality.py) and real adapters in app/adapters/
+    adapters = recitation_adapters()
+    if not adapters:
         return error_response(503, "MODELS_NOT_READY", "Real models are not installed yet")
 
     audio_bytes = await audio.read()
     if len(audio_bytes) > MAX_AUDIO_BYTES:
         return error_response(400, "FILE_TOO_LARGE", "The file is too large")
 
-    return mock_recitation(attemptId, len(audio_bytes), ayah, level, elapsed_ms(started))
+    model, model_version = model_label(adapters)
+    # TODO(week 2, Qussai): real quality gate (app/quality.py) for MOCK_MODE=false
+    quality = mock_quality(len(audio_bytes)) if is_mock_mode() else "ok"
+    if quality != "ok":
+        decision, findings = "uncertain", []
+    else:
+        decision, findings = run_recitation(adapters, audio_bytes, surah, ayah, level)
+
+    return AnalysisResult(
+        attemptId=attemptId,
+        model=model,
+        modelVersion=model_version,
+        decision=decision,
+        quality=quality,
+        findings=findings,
+        processingMs=elapsed_ms(started),
+    )
 
 
 @app.post("/v1/arabic/word", response_model=AnalysisResult)

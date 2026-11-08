@@ -65,6 +65,11 @@ def stops_child(finding, level, targeted_tajweed_codes=()):
     return level == "advanced" and finding.code in targeted_tajweed_codes
 
 
+def to_teacher(findings):
+    """The same findings with the teacher message, for an ayah the teacher checks."""
+    return [f.model_copy(update={"messageKey": "FEEDBACK_TEACHER_REVIEW"}) for f in findings]
+
+
 def decide(findings, level, targeted_tajweed_codes=()):
     """Returns (decision, findings). Findings that send the ayah to the teacher get the teacher message."""
     threshold = confidence_threshold()
@@ -72,8 +77,7 @@ def decide(findings, level, targeted_tajweed_codes=()):
 
     if unsure:
         # The child moves on and the teacher checks the ayah (FR-QUR-006)
-        teacher = [f.model_copy(update={"messageKey": "FEEDBACK_TEACHER_REVIEW"}) for f in findings]
-        return "uncertain", teacher
+        return "uncertain", to_teacher(findings)
 
     if any(stops_child(f, level, targeted_tajweed_codes) for f in findings):
         return "error", findings

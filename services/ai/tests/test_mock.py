@@ -129,3 +129,26 @@ def test_models_not_ready_when_mock_mode_is_off(monkeypatch):
     assert response.status_code == 503
     assert response.json()["error"]["code"] == "MODELS_NOT_READY"
     assert client.get("/health").json()["mockMode"] is False
+
+
+def test_models_disagree_on_ayah_7():
+    # whisper-quran says word 2 was skipped, muaalem heard it
+    result = check_contract(analyze(ayah=7))
+    assert result.decision == "uncertain"
+    assert [(f.wordIndex, f.code) for f in result.findings] == [(2, "ERR_TECH_MODELS_DISAGREE")]
+    assert result.findings[0].messageKey == "FEEDBACK_TEACHER_REVIEW"
+
+
+def test_same_input_gives_the_same_result():
+    for ayah in (1, 3, 5, 7, 21):
+        first, second = analyze(ayah=ayah).json(), analyze(ayah=ayah).json()
+        first.pop("processingMs")
+        second.pop("processingMs")
+        assert first == second
+
+
+def test_kill_switch_in_mock_mode(monkeypatch):
+    monkeypatch.setenv("MODEL_WHISPER_QURAN_ENABLED", "false")
+    result = check_contract(analyze(ayah=1))
+    assert result.decision == "uncertain"
+    assert result.findings == []
