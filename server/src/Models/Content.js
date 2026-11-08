@@ -61,10 +61,7 @@ const contentSchema = new mongoose.Schema(
 contentSchema.pre("validate", function () {
   if (this.status === "published") {
     if (!this.competencies || this.competencies.length === 0) {
-      this.invalidate(
-        "competencies",
-        "Published content must map to at least one competency",
-      );
+      this.invalidate("competencies", "Published content must map to at least one competency");
     }
     if (this.reviewRequired && (!this.reviewedBy || !this.approvedAt)) {
       this.invalidate(

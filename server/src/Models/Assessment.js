@@ -68,14 +68,10 @@ const assessmentSchema = new mongoose.Schema(
 assessmentSchema.pre("validate", function () {
   if (this.status === "completed") {
     if (!this.completedAt) this.completedAt = new Date();
-    if (this.level == null)
-      this.invalidate("level", "A completed assessment needs a level");
+    if (this.level == null) this.invalidate("level", "A completed assessment needs a level");
   }
   if (this.status !== "completed" && this.completedAt) {
-    this.invalidate(
-      "status",
-      "Only a completed assessment can have completedAt",
-    );
+    this.invalidate("status", "Only a completed assessment can have completedAt");
   }
 });
 

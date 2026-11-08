@@ -33,13 +33,7 @@ const auditEventSchema = new mongoose.Schema(
 );
 
 auditEventSchema.pre(
-  [
-    "updateOne",
-    "updateMany",
-    "findOneAndUpdate",
-    "findOneAndReplace",
-    "replaceOne",
-  ],
+  ["updateOne", "updateMany", "findOneAndUpdate", "findOneAndReplace", "replaceOne"],
   function () {
     throw new Error("Audit events are append-only and cannot be updated");
   },
@@ -54,8 +48,7 @@ auditEventSchema.pre("bulkWrite", function (ops) {
 });
 
 auditEventSchema.pre("save", function () {
-  if (!this.isNew)
-    throw new Error("Audit events are append-only and cannot be updated");
+  if (!this.isNew) throw new Error("Audit events are append-only and cannot be updated");
 });
 
 auditEventSchema.index({ targetType: 1, targetId: 1, createdAt: -1 });

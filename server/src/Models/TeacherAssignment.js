@@ -61,16 +61,10 @@ teacherAssignmentSchema.index({ teacherId: 1, status: 1 });
 teacherAssignmentSchema.index({ childId: 1, status: 1 });
 
 // Answers yes/no: is this teacher currently assigned to this child?
-teacherAssignmentSchema.statics.isAssigned = async function (
-  teacherId,
-  childId,
-) {
+teacherAssignmentSchema.statics.isAssigned = async function (teacherId, childId) {
   // Look for one active assignment card; returns its id, or null if none. !! means return true or false
   return !!(await this.exists({ teacherId, childId, status: "active" }));
 };
 
-const TeacherAssignment = mongoose.model(
-  "TeacherAssignment",
-  teacherAssignmentSchema,
-);
+const TeacherAssignment = mongoose.model("TeacherAssignment", teacherAssignmentSchema);
 export default TeacherAssignment;
