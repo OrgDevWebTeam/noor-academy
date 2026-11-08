@@ -8,6 +8,8 @@ from fastapi import FastAPI, File, Form, UploadFile
 from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse
 
+from app.missions.contracts import SelectionRequest, SelectionResponse
+from app.missions.selector import select_mission
 from app.mock import MOCK_MODEL, MOCK_VERSION, mock_arabic_word, mock_recitation
 from app.schemas import AnalysisResult, Level
 
@@ -80,3 +82,9 @@ async def analyze_arabic_word(
         return error_response(400, "FILE_TOO_LARGE", "The file is too large")
 
     return mock_arabic_word(attemptId, expectedWord, elapsed_ms(started))
+
+
+@app.post("/v1/missions/select", response_model=SelectionResponse)
+def select_family_mission(request: SelectionRequest):
+    # Contract: docs/contracts/mission-selection.md. Picks a reviewed mission, never writes one.
+    return select_mission(request)

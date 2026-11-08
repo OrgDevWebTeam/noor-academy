@@ -17,6 +17,12 @@ confirm against the architecture document and legal/child-safety review.**
 8. **Kill switch.** Any AI feature can be disabled per environment without a deploy.
 9. **Everything is measured:** each AI call emits privacy-safe telemetry.
 
+## Prototype
+
+Mission selection follows guardrails 2, 4 and 8 by design: `POST /v1/missions/select` returns an
+id from the reviewed catalog and the rule that chose it, never text. See
+`docs/contracts/mission-selection.md` and ADR-0007.
+
 ## To decide
 
 1. Exactly which features may use personalization, and which may use GenAI at all.

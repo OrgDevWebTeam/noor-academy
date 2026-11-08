@@ -58,6 +58,7 @@ and `safe_messages_v1_1.json`, so run them from inside the repository.
 | ---------------------- | ------- | --------------------------------------------------------------------------------- |
 | `MOCK_MODE`            | `true`  | Fake results. `false` needs the real models (week 2)                              |
 | `CONFIDENCE_THRESHOLD` | `0.70`  | Below this a finding makes the ayah `uncertain`. Provisional until week 4 (OD-02) |
+| `MISSIONS_AI_ENABLED`  | `false` | Lets the (mock) selector model choose a mission. Off: rules choose                |
 
 ## What the mock returns
 
@@ -71,6 +72,16 @@ and `safe_messages_v1_1.json`, so run them from inside the repository.
 
 With `MOCK_MODE=false` both endpoints return `503 MODELS_NOT_READY` until the real models are added.
 
+## Mission selection
+
+`POST /v1/missions/select` picks a Family Loop mission from the reviewed catalog. It never writes
+one. Contract and guardrails: [`docs/contracts/mission-selection.md`](../../docs/contracts/mission-selection.md).
+
+- The catalog in `app/missions/catalog.placeholder.json` holds **placeholders only**. They are
+  served in `MOCK_MODE` and never with `MOCK_MODE=false`.
+- Rules always choose. With `MISSIONS_AI_ENABLED=true` a deterministic mock selector chooses
+  instead, through the prompt in `app/missions/prompts/` and the output guardrails.
+
 ## Files
 
 | File             | What it does                                                       |
@@ -80,4 +91,5 @@ With `MOCK_MODE=false` both endpoints return `503 MODELS_NOT_READY` until the re
 | `app/policy.py`  | Decision policy v0: codes → accepted / error / uncertain per level |
 | `app/mock.py`    | Fake results for `MOCK_MODE`                                       |
 | `app/adapters/`  | Real model adapters (week 2)                                       |
+| `app/missions/`  | Mission selection: contracts, guardrails, prompt, selector         |
 | `tests/`         | Mock, policy and contract tests                                    |
