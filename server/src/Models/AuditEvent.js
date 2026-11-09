@@ -37,9 +37,12 @@ const auditEventSchema = new mongoose.Schema(
       validate: {
         validator(value) {
           if (value == null) return true;
-          return Object.keys(value).every((key) => ALLOWED_META_KEYS.includes(key));
+          return Object.entries(value).every(
+            ([key, val]) =>
+              ALLOWED_META_KEYS.includes(key) && typeof val === "string" && val.length <= 200,
+          );
         },
-        message: "meta contains a key that is not allowed",
+        message: "meta has a key that is not allowed, or a value that is not short text",
       },
     },
   },
