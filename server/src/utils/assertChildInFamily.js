@@ -1,4 +1,4 @@
-import Child from "../models/Child.js";
+import Child from "../Models/Child.js";
 
 export async function assertChildInFamily(doc, { requireActive = false } = {}) {
   // Ids are immutable, so this only needs to run when the record is first created.

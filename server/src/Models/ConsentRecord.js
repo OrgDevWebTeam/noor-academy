@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import { assertChildInFamily } from "../utils/assertChildInFamily";
+import { assertChildInFamily } from "../utils/assertChildInFamily.js";
 
 const consentRecordSchema = new mongoose.Schema(
   {
