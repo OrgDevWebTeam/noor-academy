@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import { assertChildInFamily } from "../utils/assertChildInFamily";
 
 const progressSchema = new mongoose.Schema(
   {
@@ -50,6 +51,10 @@ progressSchema.pre("validate", function () {
   if (this.status !== "completed" && this.completedAt) {
     this.invalidate("status", "Completed progress cannot be reopened");
   }
+});
+
+progressSchema.pre("validate", async function () {
+  await assertChildInFamily(this, { requireActive: true });
 });
 
 progressSchema.index({ childId: 1, contentId: 1 }, { unique: true });

@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import { assertChildInFamily } from "../utils/assertChildInFamily";
 
 const teacherAssignmentSchema = new mongoose.Schema(
   {
@@ -46,6 +47,10 @@ teacherAssignmentSchema.pre("validate", function () {
   if (this.status === "active" && this.endedAt) {
     this.invalidate("endedAt", "Active assignment cannot have endedAt");
   }
+});
+
+teacherAssignmentSchema.pre("validate", async function () {
+  await assertChildInFamily(this);
 });
 
 // One ACTIVE assignment per teacher+child. Ended ones are ignored by this index.

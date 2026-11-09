@@ -69,6 +69,9 @@ contentSchema.pre("validate", function () {
         "Review-required content needs an approved reviewer before publishing",
       );
     }
+    if (this.reviewedBy && this.createdBy && this.reviewedBy.equals(this.createdBy)) {
+      this.invalidate("reviewedBy", "A reviewer cannot approve content they created");
+    }
   }
 });
 

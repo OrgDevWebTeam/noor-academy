@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import { DOMAINS } from "../constants/index.js";
+import { assertChildInFamily } from "../utils/assertChildInFamily.js";
 
 const itemSchema = new mongoose.Schema(
   {
@@ -73,6 +74,10 @@ assessmentSchema.pre("validate", function () {
   if (this.status !== "completed" && this.completedAt) {
     this.invalidate("status", "Only a completed assessment can have completedAt");
   }
+});
+
+assessmentSchema.pre("validate", async function () {
+  await assertChildInFamily(this, { requireActive: true });
 });
 
 assessmentSchema.index(
