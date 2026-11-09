@@ -41,6 +41,7 @@ Rows marked (derived) are not in the CRS CRUD matrix. They are inferred from the
 6. Every denied action must be written to the audit log with result `denied` (FR-AUTH-003).
 7. Responses must never include `passwordHash` or fields outside the allowed view for that role.
 8. The analytics_support role has no access to Child, Assessment, Progress, ConsentRecord or other child content by default.
+9. A child whose status is not `active` cannot log in or use any child feature.
 
 ## Open questions for the PM
 
@@ -48,6 +49,8 @@ Rows marked (derived) are not in the CRS CRUD matrix. They are inferred from the
 2. Can a Child read their own Assessment results, or only the Parent?
 3. Who may delete a Child, and under what conditions? The CRS marks Child deletion with an asterisk.
 4. Is there an explicitly authorized support or escalation path for teachers outside their assignments (VAL-007)?
+5. Should `quran_task` content always require review before publishing? (see review finding F9)
+6. Which roles may read audit logs? The matrix says Platform Admin only. Please confirm.
 
 ## Not yet modeled
 
