@@ -8,16 +8,59 @@
     "subtitle": "A personalized growth platform for Muslim children."
   },
   "screens": {
-    "signIn": "Sign in",
     "profiles": "Choose a profile",
-    "today": "Today",
-    "parentHome": "Home",
-    "reviewQueue": "Review queue",
-    "contentAdmin": "Content management"
+    "addChild": "Add a child",
+    "today": "Today"
   },
-  "placeholder": "This screen is being built.",
+  "common": {
+    "retry": "Try again",
+    "loadFailed": "We could not load this page. Please try again."
+  },
   "languageSwitcher": {
     "label": "Language"
+  },
+  "profiles": {
+    "title": "Who is learning today?",
+    "addChild": "Add a child",
+    "enterPin": "Enter your PIN",
+    "pinBack": "Delete last digit",
+    "pinProgress": "Digits entered: {entered} of {total}",
+    "checking": "Checking…",
+    "wrongPin": "That PIN did not match. Try again.",
+    "locked": "Too many tries. Ask your parent for help and try again later.",
+    "noPin": "This profile has no PIN yet. Ask your parent to set one.",
+    "checkFailed": "We could not check the PIN. Please try again.",
+    "chooseAnother": "Choose another profile"
+  },
+  "addChild": {
+    "intro": "Children need only a name or nickname and a birth year. No email or phone number.",
+    "nameLabel": "Name or nickname",
+    "nameHint": "Shown in the app. A nickname is fine.",
+    "birthYearLabel": "Birth year",
+    "birthYearPrompt": "Choose a year",
+    "pinLabel": "Child's PIN",
+    "pinHint": "4 digits. Your child uses it to open their profile.",
+    "pinConfirmLabel": "Type the PIN again",
+    "submit": "Save",
+    "errors": {
+      "required": "Please fill in this field.",
+      "tooLong": "Use 50 characters or fewer.",
+      "pinFormat": "Use exactly 4 digits.",
+      "pinMismatch": "The two PINs do not match."
+    },
+    "saveFailed": "We could not save. What you typed is still here; please try again.",
+    "pinFailed": "The child was added, but the PIN was not saved. Please try again.",
+    "savedTitle": "Child added",
+    "savedBody": "You can add another child or continue to the next step.",
+    "addAnother": "Add another child",
+    "continue": "Continue"
+  },
+  "today": {
+    "emptyTitle": "Nothing is planned for today",
+    "emptyBody": "You can still pick something you enjoy."
+  },
+  "childMode": {
+    "exit": "Exit child mode"
   },
   "notFound": {
     "title": "Page not found",

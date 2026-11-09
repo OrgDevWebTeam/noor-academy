@@ -28,6 +28,18 @@ export function formatDate(
   return new Intl.DateTimeFormat(intlLocale(locale), options).format(date);
 }
 
+/** Fills `{name}` slots in dictionary text with numbers in the page language, e.g. "{done} of {total}". */
+export function formatTemplate(
+  locale: Locale,
+  text: string,
+  values: Record<string, number>,
+): string {
+  return text.replace(/\{(\w+)\}/g, (slot, name: string) => {
+    const value = values[name];
+    return value === undefined ? slot : formatNumber(locale, value);
+  });
+}
+
 /** Text for each CLDR plural category. Arabic uses all six; English uses "one" and "other". */
 export type PluralForms = Partial<Record<Intl.LDMLPluralRule, string>> & { other: string };
 

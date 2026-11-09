@@ -10,12 +10,9 @@ function allPaths(list: RouteObject[]): string[] {
 
 describe("route table", () => {
   it.each([
-    ["/ar/sign-in", "sign-in"],
     ["/en/profiles", "profiles"],
+    ["/ar/onboarding/child", "onboarding/child"],
     ["/ar/today", "today"],
-    ["/en/parent", "parent"],
-    ["/ar/teacher/review", "teacher/review"],
-    ["/en/admin/content", "admin/content"],
     ["/ar/maintenance", "maintenance"],
   ])("opens %s", (url, path) => {
     expect(leafRoute(url)?.path).toBe(path);
