@@ -51,7 +51,7 @@ app.use((err, req, res, next) => {
   }
 
   console.error(err);
-  res.status(500).json({ status: "fail", message: "Server error" });
+  res.status(500).json({ status: "error", message: "Server error" });
 });
 
 export default app;

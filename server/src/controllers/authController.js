@@ -27,6 +27,7 @@ export async function registerParent(req, res) {
   }
 
   res.status(201).json({
+    status: "success",
     token: signToken(user),
     user: { id: user._id, name: user.name, email: user.email, role: user.role },
     family: { id: family._id, name: family.name },
@@ -44,7 +45,8 @@ export async function login(req, res) {
     return res.status(401).json({ status: "fail", message: "Invalid email or password" });
   }
 
-  res.json({
+  res.status(200).json({
+    status: "success",
     token: signToken(user),
     user: { id: user._id, name: user.name, email: user.email, role: user.role },
   });

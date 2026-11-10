@@ -4,6 +4,7 @@ export default function validate(schema) {
 
     if (!result.success) {
       return res.status(400).json({
+        status: "fail",
         message: "Invalid input",
         errors: result.error.issues.map((issue) => ({
           field: issue.path.join("."),

@@ -18,7 +18,9 @@ export default function authorize(...allowedRoles) {
         console.error("Failed to record audit event:", error.message);
       }
 
-      return res.status(403).json({ message: "You do not have permission to perform this action" });
+      return res
+        .status(403)
+        .json({ status: "fail", message: "You do not have permission to perform this action" });
     }
 
     next();
