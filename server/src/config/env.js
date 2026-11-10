@@ -12,6 +12,7 @@ const schema = z.object({
   DATABASE_PASSWORD: z.string().min(1),
   JWT_SECRET: z.string().min(32),
   JWT_EXPIRES_IN: z.string().default("7d"),
+  CLIENT_ORIGIN: z.string().url().default("http://localhost:5173"),
 });
 
 const result = schema.safeParse(process.env);
@@ -32,6 +33,7 @@ const config = Object.freeze({
   databaseUrl: env.DATABASE.replace("<PASSWORD>", encodeURIComponent(env.DATABASE_PASSWORD)),
   jwtSecret: env.JWT_SECRET,
   jwtExpiresIn: env.JWT_EXPIRES_IN,
+  clientOrigin: env.CLIENT_ORIGIN,
 });
 
 export default config;
