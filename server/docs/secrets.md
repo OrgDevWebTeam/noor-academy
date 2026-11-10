@@ -14,9 +14,10 @@ This file explains where secrets live, how they are kept out of source control, 
 
 ## Current secrets
 
-| Name                | What it is                                  | Where it is used    |
-| ------------------- | ------------------------------------------- | ------------------- |
-| `DATABASE_PASSWORD` | Password of the MongoDB Atlas database user | `src/config/env.js` |
+| Name                | What it is                                                                             | Where it is used    |
+| ------------------- | -------------------------------------------------------------------------------------- | ------------------- |
+| `DATABASE_PASSWORD` | Password of the MongoDB Atlas database user                                            | `src/config/env.js` |
+| `JWT_SECRET`        | Key used to sign login tokens. Anyone who has it can create a valid token for any user | `src/config/env.js` |
 
 Non-secret settings (`NODE_ENV`, `PORT`, and the `DATABASE` connection string with the `<PASSWORD>` placeholder) are kept in the same file for convenience.
 
@@ -30,6 +31,8 @@ Future secrets (for example a JWT signing key) must be added to `.env.example` a
 - The password is URL-encoded before it is placed in the connection string, so special characters do not break the connection.
 
 ## Rotation
+
+Rotating JWT_SECRET logs everyone out, because old tokens stop being valid.
 
 If a secret is shared by mistake (chat, screenshot, commit, log):
 

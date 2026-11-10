@@ -10,6 +10,8 @@ const schema = z.object({
       message: "must contain the <PASSWORD> placeholder",
     }),
   DATABASE_PASSWORD: z.string().min(1),
+  JWT_SECRET: z.string().min(32),
+  JWT_EXPIRES_IN: z.string().default("7d"),
 });
 
 const result = schema.safeParse(process.env);
@@ -28,6 +30,8 @@ const config = Object.freeze({
   nodeEnv: env.NODE_ENV,
   port: env.PORT,
   databaseUrl: env.DATABASE.replace("<PASSWORD>", encodeURIComponent(env.DATABASE_PASSWORD)),
+  jwtSecret: env.JWT_SECRET,
+  jwtExpiresIn: env.JWT_EXPIRES_IN,
 });
 
 export default config;
