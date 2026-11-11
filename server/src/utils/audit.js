@@ -10,18 +10,25 @@ export const AUDIT_ACTIONS = Object.freeze([
   "access.denied",
 ]);
 
-export async function recordAudit({ actor, action, target, result = "success", meta }) {
+export async function recordAudit({ actor, action, target, result = "success", meta, session }) {
   if (!AUDIT_ACTIONS.includes(action)) {
     throw new Error(`Unknown audit action: ${action}`);
   }
 
-  return AuditEvent.create({
-    actorId: actor?._id,
-    actorRole: actor?.role,
-    targetType: target?.type,
-    targetId: target?.id,
-    action,
-    result,
-    meta,
-  });
+  const [event] = await AuditEvent.create(
+    [
+      {
+        actorId: actor?._id,
+        actorRole: actor?.role,
+        targetType: target?.type,
+        targetId: target?.id,
+        action,
+        result,
+        meta,
+      },
+    ],
+    { session },
+  );
+
+  return event;
 }

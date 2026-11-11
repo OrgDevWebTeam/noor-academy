@@ -5,6 +5,8 @@ import rateLimit from "express-rate-limit";
 import config from "./config/env.js";
 import authRoutes from "./routes/authRoutes.js";
 import childrenRoutes from "./routes/childrenRoutes.js";
+import AppError from "./utils/AppError.js";
+import consentRoutes from "./routes/consentRoutes.js";
 
 const app = express();
 
@@ -26,6 +28,7 @@ const authLimiter = rateLimit({
 // Routes are mounted here, one step at a time:
 app.use("/api/v1/auth", authLimiter, authRoutes);
 app.use("/api/v1/children", childrenRoutes);
+app.use("/api/v1/consents", consentRoutes);
 
 app.use((req, res) => {
   res.status(404).json({ message: "Route not found" });
@@ -34,6 +37,12 @@ app.use((req, res) => {
 app.use((err, req, res, next) => {
   if (res.headersSent) {
     return next(err);
+  }
+  if (err instanceof AppError) {
+    return res.status(err.statusCode).json({
+      status: err.statusCode < 500 ? "fail" : "error",
+      message: err.message,
+    });
   }
   if (err.type === "entity.parse.failed") {
     return res.status(400).json({ status: "fail", message: "Invalid JSON" });
