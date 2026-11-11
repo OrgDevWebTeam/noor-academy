@@ -4,6 +4,7 @@ import cors from "cors";
 import rateLimit from "express-rate-limit";
 import config from "./config/env.js";
 import authRoutes from "./routes/authRoutes.js";
+import childrenRoutes from "./routes/childrenRoutes.js";
 
 const app = express();
 
@@ -24,6 +25,7 @@ const authLimiter = rateLimit({
 
 // Routes are mounted here, one step at a time:
 app.use("/api/v1/auth", authLimiter, authRoutes);
+app.use("/api/v1/children", childrenRoutes);
 
 app.use((req, res) => {
   res.status(404).json({ message: "Route not found" });
