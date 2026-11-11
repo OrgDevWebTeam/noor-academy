@@ -12,7 +12,7 @@ MERN monorepo for the Noor Academy prototype: MongoDB, Express, React, Node.js (
 | `packages/ui`        | Bilingual/RTL UI primitives and design tokens            |
 | `packages/config`    | Shared TypeScript presets                                |
 | `infra`              | Infrastructure as code                                   |
-| `docs`               | ADRs, environments, workstreams, AI and data specs       |
+| `docs`               | ADRs, environments, AI and data specs                    |
 
 ## Prerequisites
 
@@ -54,4 +54,4 @@ pnpm --filter @noor/web dev            # web on http://localhost:3000
 - **Conventional Commits** are enforced by commitlint, and the PR title is checked in CI.
 - **Secrets** never enter the repo. Only `VITE_*` variables reach the browser.
 - **The repo is public.** Never commit audio, datasets, real child data or `.env` files.
-- See `docs/WORKSTREAMS.md` for owners and `docs/ENVIRONMENTS.md` for environment rules.
+- See `docs/ENVIRONMENTS.md` for environment rules.
