@@ -8,6 +8,7 @@ import childrenRoutes from "./routes/childrenRoutes.js";
 import AppError from "./utils/AppError.js";
 import consentRoutes from "./routes/consentRoutes.js";
 import curriculumRoutes from "./routes/curriculumRoutes.js";
+import contentRoutes from "./routes/contentRoutes.js";
 
 const app = express();
 
@@ -32,6 +33,7 @@ app.use("/api/v1/auth", authLimiter, authRoutes);
 app.use("/api/v1/children", childrenRoutes);
 app.use("/api/v1/consents", consentRoutes);
 app.use("/api/v1/curriculum", curriculumRoutes);
+app.use("/api/v1/content", contentRoutes);
 
 app.use((req, res) => {
   res.status(404).json({ message: "Route not found" });
