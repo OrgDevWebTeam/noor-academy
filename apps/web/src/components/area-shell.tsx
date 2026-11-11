@@ -1,18 +1,23 @@
-import { Outlet } from "react-router";
-
-export type Area = "auth" | "family" | "child" | "parent" | "teacher" | "admin";
+import { SkeletonText } from "@noor/ui";
+import { Outlet, useNavigation } from "react-router";
+import { type Area } from "@/lib/session/area-access";
+import { ChildModeBar } from "./child-mode-bar";
 
 /**
- * Page frame for one area of the app. Each area in `router.tsx` renders it once.
- *
- * Private areas will read the session here to decide what to show. That check only shapes the
- * page: the API enforces every permission itself (ADR-0006).
+ * Page frame for one area of the app. Each area in `router.tsx` renders it once; the area's
+ * loader has already checked the session. While the next page loads, a skeleton takes its place.
  */
 export function AreaShell({ area }: { area: Area }) {
+  const isLoading = useNavigation().state === "loading";
+
   return (
     <div data-area={area} className="flex flex-1 flex-col">
-      <main className="mx-auto flex w-full max-w-5xl flex-1 flex-col gap-6 px-4 py-8 sm:px-6">
-        <Outlet />
+      {area === "child" && <ChildModeBar />}
+      <main
+        aria-busy={isLoading}
+        className="mx-auto flex w-full max-w-5xl flex-1 flex-col gap-6 px-4 py-8 sm:px-6"
+      >
+        {isLoading ? <SkeletonText lines={4} /> : <Outlet />}
       </main>
     </div>
   );

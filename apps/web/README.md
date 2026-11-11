@@ -14,8 +14,20 @@ pnpm --filter @noor/web dev    # http://localhost:3000, redirects to /ar or /en
 pnpm check                     # format, lint, typecheck, test, build: what CI runs
 ```
 
-The app does not call the API yet. When it does, the dev server forwards `/v1` to
-`http://127.0.0.1:4000`, so no CORS setup is needed locally.
+The dev server forwards `/v1` to the API at `http://127.0.0.1:4000`, so no CORS setup is needed
+locally. To use the screens that call the API (see [Data](#data)):
+
+```bash
+pnpm --filter @noor/api services:up   # MongoDB in Docker
+pnpm --filter @noor/api migrate
+pnpm --filter @noor/api dev:idp       # local test identity provider on 127.0.0.1:4010
+pnpm --filter @noor/api start:local   # API, with the dev-idp OIDC settings in .env (see dev-idp.mjs)
+pnpm --filter @noor/web dev
+```
+
+Real sign-in (G06) waits for the identity provider decision. Until then, open `/en/dev/session`
+to start a test parent session; it lives in memory only, so a reload signs out. Without a session,
+private pages send the visitor to the landing page.
 
 Inside `apps/web`, the same scripts run for this app only:
 
@@ -39,8 +51,12 @@ src/
   router.tsx              Every route, grouped by area
   styles.css              Tailwind, design tokens and fonts
   pages/                  One file per screen, plus the X06 states (404, error, loading, maintenance)
-    dev/                  /dev/ui and /dev/rtl: visual checks, development only
+    dev/                  /dev/ui, /dev/rtl and /dev/session: development only
+  features/               Data and rules of one feature: children
   components/             App-wide pieces: page frame, header, language switcher, offline banner
+  lib/
+    api/                  API client
+    session/              Session in memory, active child, area access rules
   i18n/                   Languages, dictionaries, localized paths, number/date/plural formatting
 public/
   manifest.webmanifest    PWA manifest
@@ -49,8 +65,8 @@ public/
   icons/                  PWA icons (placeholders until the brand assets arrive)
 ```
 
-Screen IDs (G01, C01…) come from the UI Screens Spec. Each area has one placeholder page today; product
-features arrive in later milestones as `src/features/<name>/` folders.
+Screen IDs (G01, C01…) come from the UI Screens Spec. Each screen is added with its task; product
+features live in `src/features/<name>/` folders.
 
 Shared code lives in packages:
 
@@ -58,6 +74,21 @@ Shared code lives in packages:
   `@noor/contracts/locale`, which keeps the API's schema library out of the browser bundle.
 - `@noor/ui`: design tokens, UI primitives and shared lint rules. Vite compiles its TypeScript source
   with the app.
+
+## Data
+
+Screens get data through `src/features/*/…-api.ts`, which call the API with `src/lib/api/client.ts`.
+There is no mock: a screen that needs data is added once its API exists.
+
+| Screen                     | API                                                    | Still to come                                                          |
+| -------------------------- | ------------------------------------------------------ | ---------------------------------------------------------------------- |
+| G08 profile picker and PIN | `GET /v1/children`, `POST /v1/children/:id/pin/verify` | The parent card, with the parent area (KAN-60)                         |
+| O01 add a child            | `POST /v1/children`, `POST /v1/children/:id/pin`       | Optional child fields (language, country, interests, avatar): KAN-22   |
+| C01 Today (skeleton)       | None yet                                               | Today's activities: KAN-31, with the mission APIs of KAN-30 and KAN-40 |
+
+The other onboarding steps, O02–O04 (questions, placement check, journey preview), wait for their
+APIs. No ticket covers the answers or the placement check yet, and the journey's missions come with
+KAN-40.
 
 ## How languages work
 
@@ -76,8 +107,9 @@ Shared code lives in packages:
 ## Development pages
 
 `/ar/dev/ui` shows every `@noor/ui` primitive. `/ar/dev/rtl` checks mixed text, numbers, dates,
-plurals and mirroring. Open them with `/en/...` for the LTR version. They exist in development only:
-production bundles do not contain them, and those paths show the 404 page.
+plurals and mirroring. `/ar/dev/session` starts a test parent session with a token from the local
+dev-idp, until real sign-in exists. Open them with `/en/...` for the LTR version. They exist in
+development only: production bundles do not contain them, and those paths show the 404 page.
 
 ## PWA
 
