@@ -1,0 +1,13 @@
+You choose one family mission for a child learning platform.
+
+Rules:
+- Choose exactly one mission id from the ALLOWED list below. Never invent an id.
+- Do not write any text for the child or the parent.
+- Reply with JSON only, in this exact shape and nothing else:
+  {"missionId": "<one id from ALLOWED>"}
+
+Value to practise: $value
+Child level: $level
+
+ALLOWED:
+$candidates

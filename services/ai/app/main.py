@@ -8,6 +8,8 @@ from fastapi import FastAPI, File, Form, UploadFile
 from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse
 
+from app.missions.contracts import SelectionRequest, SelectionResponse
+from app.missions.selector import select_mission
 from app.mock import MOCK_MODEL, MOCK_VERSION, mock_arabic_word, mock_recitation
 from app.schemas import AnalysisResult, Level
 
@@ -53,10 +55,12 @@ async def analyze_recitation(
 ):
     started = time.perf_counter()
     if not is_mock_mode():
-        # TODO(week 2, Qussai): quality gate (app/quality.py) and real adapters in app/adapters/
+        # TODO(week 3, Qussai): ffmpeg decode to 16 kHz mono WAV, then the quality gate (app/audio.py,
+        # not wired yet: it only reads 16 kHz mono 16-bit WAV), then real adapters in app/adapters/
         return error_response(503, "MODELS_NOT_READY", "Real models are not installed yet")
 
-    audio_bytes = await audio.read()
+    # Read at most one byte over the limit, so an oversized upload is never loaded fully into memory
+    audio_bytes = await audio.read(MAX_AUDIO_BYTES + 1)
     if len(audio_bytes) > MAX_AUDIO_BYTES:
         return error_response(400, "FILE_TOO_LARGE", "The file is too large")
 
@@ -75,8 +79,15 @@ async def analyze_arabic_word(
         # TODO(week 5, Qussai): Arabic word check with faster-whisper
         return error_response(503, "MODELS_NOT_READY", "Real models are not installed yet")
 
-    audio_bytes = await audio.read()
+    # Read at most one byte over the limit, so an oversized upload is never loaded fully into memory
+    audio_bytes = await audio.read(MAX_AUDIO_BYTES + 1)
     if len(audio_bytes) > MAX_AUDIO_BYTES:
         return error_response(400, "FILE_TOO_LARGE", "The file is too large")
 
     return mock_arabic_word(attemptId, expectedWord, elapsed_ms(started))
+
+
+@app.post("/v1/missions/select", response_model=SelectionResponse)
+def select_family_mission(request: SelectionRequest):
+    # Contract: docs/contracts/mission-selection.md. Picks a reviewed mission, never writes one.
+    return select_mission(request)

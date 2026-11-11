@@ -1,5 +1,12 @@
 import { describe, expect, it } from "vitest";
-import { ARABIC_NUMBERING, formatDate, formatNumber, plural, type PluralForms } from "./format";
+import {
+  ARABIC_NUMBERING,
+  formatDate,
+  formatNumber,
+  formatTemplate,
+  plural,
+  type PluralForms,
+} from "./format";
 
 const ARABIC_INDIC_DIGITS = /[٠-٩]/;
 
@@ -30,6 +37,19 @@ describe("formatDate", () => {
 
   it("writes English dates in English", () => {
     expect(formatDate("en", date, { dateStyle: "long", timeZone: "UTC" })).toBe("November 4, 2026");
+  });
+});
+
+describe("formatTemplate", () => {
+  it("fills each slot with a number in the page language", () => {
+    expect(formatTemplate("en", "{done} of {total}", { done: 2, total: 1200 })).toBe("2 of 1,200");
+    expect(formatTemplate("ar", "{done} من {total}", { done: 2, total: 5 })).toBe(
+      `${formatNumber("ar", 2)} من ${formatNumber("ar", 5)}`,
+    );
+  });
+
+  it("leaves a slot without a value as it is", () => {
+    expect(formatTemplate("en", "{done} of {total}", { done: 1 })).toBe("1 of {total}");
   });
 });
 

@@ -81,6 +81,10 @@ model (AP-11, Architecture §5 and §8.2).
 - A mission is picked from a **fixed, reviewed table** that links a value to a mission: a wrong
   answer about a value in an Asia & Sham story picks the mission for that value (FR-AGT-004). No
   generated missions.
+- Prototype: `POST /v1/missions/select` in the AI service returns only an id from that table,
+  with the rule that chose it. An optional selector model may only choose among reviewed ids,
+  behind a kill switch that is off by default (contract: `docs/contracts/mission-selection.md`,
+  ADR-0007).
 - Parents answer with three options only (VAL-004), and **one observation never proves a value is
   mastered** (FR-FAM-004, VAL-005).
 - The system never judges the child's behavior at home; the parent is the source (CRS §5.2,
