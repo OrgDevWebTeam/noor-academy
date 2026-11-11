@@ -65,6 +65,10 @@ childSchema.pre("validate", function () {
   }
 });
 
+childSchema.statics.findOwned = function (childId, familyId) {
+  return this.findOne({ _id: childId, familyId });
+};
+
 childSchema.index({ familyId: 1, status: 1 });
 
 const Child = mongoose.model("Child", childSchema);

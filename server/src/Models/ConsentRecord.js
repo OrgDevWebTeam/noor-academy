@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import { assertChildInFamily } from "../utils/assertChildInFamily.js";
 
 const consentRecordSchema = new mongoose.Schema(
   {
@@ -46,6 +47,10 @@ const consentRecordSchema = new mongoose.Schema(
   },
   { timestamps: { createdAt: true, updatedAt: false } },
 );
+
+consentRecordSchema.pre("validate", async function () {
+  await assertChildInFamily(this);
+});
 
 // Newest record first, per child. Makes "what is the latest consent for this child?" fast.
 consentRecordSchema.index({ childId: 1, createdAt: -1 });

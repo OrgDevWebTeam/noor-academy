@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 import dns from "node:dns";
 import app from "./app.js";
+import config from "./config/env.js";
 
 process.on("uncaughtException", (err) => {
   if (err) {
@@ -12,16 +13,10 @@ process.on("uncaughtException", (err) => {
   process.exit(1);
 });
 
-if (!process.env.DATABASE || !process.env.DATABASE_PASSWORD) {
-  throw new Error("Missing database environment variables");
-}
-
-const DB = process.env.DATABASE.replace("<PASSWORD>", process.env.DATABASE_PASSWORD);
-
 dns.setServers(["8.8.8.8", "1.1.1.1"]);
-mongoose.connect(DB).then(() => console.log("CONNECTED TO DB ✅"));
+mongoose.connect(config.databaseUrl).then(() => console.log("CONNECTED TO DB ✅"));
 
-const port = process.env.PORT || 3000;
+const port = config.port;
 const server = app.listen(port, () => {
   console.log(`App running on port: ${port}...`);
 });

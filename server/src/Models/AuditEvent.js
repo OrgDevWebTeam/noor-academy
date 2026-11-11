@@ -1,5 +1,7 @@
 import mongoose from "mongoose";
 
+export const ALLOWED_META_KEYS = ["fromRole", "toRole", "reason", "requestId", "field"];
+
 const auditEventSchema = new mongoose.Schema(
   {
     actorId: {
@@ -28,6 +30,21 @@ const auditEventSchema = new mongoose.Schema(
       required: true,
       immutable: true,
     },
+
+    meta: {
+      type: mongoose.Schema.Types.Mixed,
+      immutable: true,
+      validate: {
+        validator(value) {
+          if (value == null) return true;
+          return Object.entries(value).every(
+            ([key, val]) =>
+              ALLOWED_META_KEYS.includes(key) && typeof val === "string" && val.length <= 200,
+          );
+        },
+        message: "meta has a key that is not allowed, or a value that is not short text",
+      },
+    },
   },
   { timestamps: { createdAt: true, updatedAt: false } },
 );
@@ -53,6 +70,8 @@ auditEventSchema.pre("save", function () {
 
 auditEventSchema.index({ targetType: 1, targetId: 1, createdAt: -1 });
 auditEventSchema.index({ actorId: 1, createdAt: -1 });
+auditEventSchema.index({ action: 1, createdAt: -1 });
+auditEventSchema.index({ createdAt: -1 });
 
 const AuditEvent = mongoose.model("AuditEvent", auditEventSchema);
 export default AuditEvent;
