@@ -1,46 +1,35 @@
 {
   "name": "@noor/api",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "private": true,
   "type": "module",
-  "description": "Express API (Node.js, TypeScript)",
-  "main": "./dist/server.js",
+  "main": "src/server.js",
+  "description": "Noor Academy backend (Express, MongoDB)",
   "scripts": {
-    "build": "tsc -p tsconfig.build.json",
-    "typecheck": "tsc --noEmit -p tsconfig.json",
-    "test": "vitest run --passWithNoTests",
-    "start:local": "tsc -p tsconfig.build.json && node --env-file=../../.env dist/server.js",
-    "migrate": "node --env-file=../../.env scripts/migrate.mjs up",
-    "migrate:down": "node --env-file=../../.env scripts/migrate.mjs down",
+    "dev": "node --watch --env-file=.env src/server.js",
+    "start": "node src/server.js",
+    "start:local": "node --env-file=.env src/server.js",
+    "test": "node --test",
+    "test:integration": "node --test",
     "db:up": "docker compose -f ../../docker-compose.yml up -d --wait mongo",
     "services:up": "docker compose -f ../../docker-compose.yml up -d --wait --build mongo ai",
     "db:down": "docker compose -f ../../docker-compose.yml down",
-    "db:reset": "docker compose -f ../../docker-compose.yml down -v",
-    "test:integration": "vitest run --config vitest.integration.config.ts",
-    "dev:idp": "node scripts/dev-idp.mjs"
+    "db:reset": "docker compose -f ../../docker-compose.yml down -v"
   },
   "dependencies": {
-    "@noor/contracts": "workspace:*",
+    "bcrypt": "^6.0.0",
     "cors": "^2.8.6",
     "express": "^5.3.0",
     "express-rate-limit": "^8.7.3",
     "helmet": "^8.3.0",
-    "jose": "^6.2.15",
-    "mongodb": "^7.8.0",
-    "multer": "^2.5.0",
+    "jsonwebtoken": "^9.0.3",
+    "mongoose": "^9.11.4",
     "pino": "^10.4.0",
     "pino-http": "^11.0.0",
     "zod": "^4.6.7"
   },
   "devDependencies": {
-    "@noor/config": "workspace:*",
-    "@types/cors": "^2.8.19",
-    "@types/express": "^5.0.6",
-    "@types/multer": "^2.3.0",
-    "@types/node": "catalog:",
-    "@types/supertest": "^7.2.1",
-    "supertest": "^7.3.1",
-    "typescript": "catalog:",
-    "vitest": "catalog:"
+    "mongodb-memory-server": "^11.3.0",
+    "pino-pretty": "^13.2.0"
   }
 }
