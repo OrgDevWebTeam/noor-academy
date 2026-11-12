@@ -66,13 +66,13 @@ recording, so duration is checked after decoding (A.3).
 
 #### Gate measurements
 
-| Measure        | Definition                                                              |
-| -------------- | ----------------------------------------------------------------------- |
-| Duration       | Decoded samples ÷ 16000                                                 |
-| Speech seconds | Total length of the speech parts Silero VAD finds                       |
-| Speech ratio   | Speech seconds ÷ duration, over the whole clip                          |
-| Clipped ratio  | Samples with an absolute value of at least 32000 (16-bit) ÷ all samples |
-| RMS            | RMS of the whole clip (logged only)                                     |
+| Measure        | Definition                                                                                                                                                                                           |
+| -------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Duration       | Decoded samples ÷ 16000                                                                                                                                                                              |
+| Speech seconds | Total length of the speech parts Silero VAD finds, with its threshold at 0.2 (`VAD_THRESHOLD`). The default 0.5 missed long madd and ghunna sounds, so clean recordings were rejected as `too_noisy` |
+| Speech ratio   | Speech seconds ÷ duration, over the whole clip                                                                                                                                                       |
+| Clipped ratio  | Samples with an absolute value of at least 32000 (16-bit) ÷ all samples                                                                                                                              |
+| RMS            | RMS of the whole clip (logged only)                                                                                                                                                                  |
 
 #### Order of checks
 

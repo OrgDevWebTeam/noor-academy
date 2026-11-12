@@ -21,6 +21,9 @@ SAMPLE_RATE = 16000  # the models need 16 kHz mono
 MAX_SECONDS = 30.0  # longer -> too_long
 MIN_SECONDS = 0.03  # shorter (or empty) -> too_short
 MIN_SPEECH_SECONDS = 0.3  # less speech than this -> silent
+# Silero VAD sensitivity. Its default (0.5) misses long madd and ghunna sounds of recitation,
+# so clean recordings came back too_noisy. 0.2 passed all 50 clean test recordings.
+VAD_THRESHOLD = 0.2
 MIN_SPEECH_RATIO = 0.30  # speech seconds / all seconds below this -> too_noisy
 CLIPPED_LEVEL = 0.976  # |sample| at or above this counts as clipped (32000 / 32768)
 MAX_CLIPPED_RATIO = 0.01  # more than 1% clipped samples -> too_noisy
@@ -74,7 +77,9 @@ def speech_seconds(samples):
     if vad_model is None:
         vad_model = load_silero_vad()
 
-    parts = get_speech_timestamps(torch.from_numpy(samples), vad_model, sampling_rate=SAMPLE_RATE)
+    parts = get_speech_timestamps(
+        torch.from_numpy(samples), vad_model, sampling_rate=SAMPLE_RATE, threshold=VAD_THRESHOLD
+    )
     return sum(part["end"] - part["start"] for part in parts) / SAMPLE_RATE
 
 
