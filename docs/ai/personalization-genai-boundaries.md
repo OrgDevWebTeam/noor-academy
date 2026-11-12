@@ -19,9 +19,7 @@ confirm against the architecture document and legal/child-safety review.**
 
 ## Prototype
 
-Mission selection follows guardrails 2, 4 and 8 by design: `POST /v1/missions/select` returns an
-id from the reviewed catalog and the rule that chose it, never text. See
-`docs/contracts/mission-selection.md` and ADR-0007.
+Missions are chosen by rules only. No AI model is used to pick a mission.
 
 ## To decide
 

@@ -9,7 +9,7 @@ export const AI_DECISIONS = ["accepted", "error", "uncertain"] as const;
 export type AiDecision = (typeof AI_DECISIONS)[number];
 
 /** Anything but "ok" is a quality rejection and does not count as an attempt (VAL-014). */
-export const AI_QUALITIES = ["ok", "silent", "too_short", "too_noisy"] as const;
+export const AI_QUALITIES = ["ok", "silent", "too_short", "too_noisy", "too_long"] as const;
 export type AiQuality = (typeof AI_QUALITIES)[number];
 
 export const AI_CATEGORIES = ["memorization", "pronunciation", "tajweed", "technical"] as const;

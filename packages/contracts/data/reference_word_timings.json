@@ -3,31 +3,31 @@
     "surah_id": 1,
     "ayah_id": 1,
     "audio_file": "001001.mp3",
-    "total_duration_ms": 6031,
+    "total_duration_ms": 5128,
     "words": [
       {
         "position": 1,
         "text": "بِسْمِ",
         "start_ms": 0,
-        "end_ms": 610
+        "end_ms": 480
       },
       {
         "position": 2,
         "text": "ٱللَّهِ",
-        "start_ms": 620,
-        "end_ms": 1310
+        "start_ms": 600,
+        "end_ms": 1000
       },
       {
         "position": 3,
         "text": "ٱلرَّحْمَٰنِ",
-        "start_ms": 1320,
-        "end_ms": 2450
+        "start_ms": 1800,
+        "end_ms": 2160
       },
       {
         "position": 4,
         "text": "ٱلرَّحِيمِ",
-        "start_ms": 2460,
-        "end_ms": 6031
+        "start_ms": 2480,
+        "end_ms": 5128
       }
     ]
   },
@@ -35,31 +35,31 @@
     "surah_id": 1,
     "ayah_id": 2,
     "audio_file": "001002.mp3",
-    "total_duration_ms": 5534,
+    "total_duration_ms": 6277,
     "words": [
       {
         "position": 1,
         "text": "ٱلْحَمْدُ",
         "start_ms": 0,
-        "end_ms": 960
+        "end_ms": 1240
       },
       {
         "position": 2,
         "text": "لِلَّهِ",
-        "start_ms": 970,
-        "end_ms": 1800
+        "start_ms": 1570,
+        "end_ms": 1670
       },
       {
         "position": 3,
         "text": "رَبِّ",
-        "start_ms": 1810,
-        "end_ms": 2460
+        "start_ms": 2530,
+        "end_ms": 2630
       },
       {
         "position": 4,
         "text": "ٱلْعَٰلَمِينَ",
-        "start_ms": 2470,
-        "end_ms": 5534
+        "start_ms": 2800,
+        "end_ms": 6277
       }
     ]
   },
@@ -67,19 +67,19 @@
     "surah_id": 1,
     "ayah_id": 3,
     "audio_file": "001003.mp3",
-    "total_duration_ms": 4572,
+    "total_duration_ms": 4501,
     "words": [
       {
         "position": 1,
         "text": "ٱلرَّحْمَٰنِ",
         "start_ms": 0,
-        "end_ms": 1230
+        "end_ms": 1200
       },
       {
         "position": 2,
         "text": "ٱلرَّحِيمِ",
-        "start_ms": 1240,
-        "end_ms": 4572
+        "start_ms": 1520,
+        "end_ms": 4501
       }
     ]
   },
@@ -87,25 +87,25 @@
     "surah_id": 1,
     "ayah_id": 4,
     "audio_file": "001004.mp3",
-    "total_duration_ms": 4601,
+    "total_duration_ms": 4632,
     "words": [
       {
         "position": 1,
         "text": "مَٰلِكِ",
         "start_ms": 0,
-        "end_ms": 840
+        "end_ms": 720
       },
       {
         "position": 2,
         "text": "يَوْمِ",
-        "start_ms": 850,
-        "end_ms": 1400
+        "start_ms": 920,
+        "end_ms": 1440
       },
       {
         "position": 3,
         "text": "ٱلدِّينِ",
-        "start_ms": 1410,
-        "end_ms": 4601
+        "start_ms": 1840,
+        "end_ms": 4632
       }
     ]
   },
@@ -113,31 +113,31 @@
     "surah_id": 1,
     "ayah_id": 5,
     "audio_file": "001005.mp3",
-    "total_duration_ms": 6652,
+    "total_duration_ms": 6852,
     "words": [
       {
         "position": 1,
         "text": "إِيَّاكَ",
         "start_ms": 0,
-        "end_ms": 970
+        "end_ms": 1000
       },
       {
         "position": 2,
         "text": "نَعْبُدُ",
-        "start_ms": 980,
-        "end_ms": 1710
+        "start_ms": 1200,
+        "end_ms": 2000
       },
       {
         "position": 3,
         "text": "وَإِيَّاكَ",
-        "start_ms": 1720,
-        "end_ms": 2870
+        "start_ms": 2080,
+        "end_ms": 3160
       },
       {
         "position": 4,
         "text": "نَسْتَعِينُ",
-        "start_ms": 2880,
-        "end_ms": 6652
+        "start_ms": 3400,
+        "end_ms": 6852
       }
     ]
   },
@@ -145,25 +145,25 @@
     "surah_id": 1,
     "ayah_id": 6,
     "audio_file": "001006.mp3",
-    "total_duration_ms": 5544,
+    "total_duration_ms": 5363,
     "words": [
       {
         "position": 1,
         "text": "ٱهْدِنَا",
         "start_ms": 0,
-        "end_ms": 670
+        "end_ms": 680
       },
       {
         "position": 2,
         "text": "ٱلصِّرَٰطَ",
-        "start_ms": 680,
-        "end_ms": 1630
+        "start_ms": 1000,
+        "end_ms": 1640
       },
       {
         "position": 3,
         "text": "ٱلْمُسْتَقِيمَ",
-        "start_ms": 1640,
-        "end_ms": 5544
+        "start_ms": 2040,
+        "end_ms": 5363
       }
     ]
   },
@@ -171,61 +171,61 @@
     "surah_id": 1,
     "ayah_id": 7,
     "audio_file": "001007.mp3",
-    "total_duration_ms": 13187,
+    "total_duration_ms": 14950,
     "words": [
       {
         "position": 1,
         "text": "صِرَٰطَ",
         "start_ms": 0,
-        "end_ms": 740
+        "end_ms": 960
       },
       {
         "position": 2,
         "text": "ٱلَّذِينَ",
-        "start_ms": 750,
-        "end_ms": 1700
+        "start_ms": 1240,
+        "end_ms": 1640
       },
       {
         "position": 3,
         "text": "أَنْعَمْتَ",
-        "start_ms": 1710,
-        "end_ms": 2620
+        "start_ms": 2000,
+        "end_ms": 2840
       },
       {
         "position": 4,
         "text": "عَلَيْهِمْ",
-        "start_ms": 2630,
-        "end_ms": 3590
+        "start_ms": 3320,
+        "end_ms": 3720
       },
       {
         "position": 5,
         "text": "غَيْرِ",
-        "start_ms": 3600,
-        "end_ms": 4210
+        "start_ms": 4000,
+        "end_ms": 4120
       },
       {
         "position": 6,
         "text": "ٱلْمَغْضُوبِ",
-        "start_ms": 4220,
-        "end_ms": 5290
+        "start_ms": 5040,
+        "end_ms": 6000
       },
       {
         "position": 7,
         "text": "عَلَيْهِمْ",
-        "start_ms": 5300,
-        "end_ms": 6320
+        "start_ms": 6440,
+        "end_ms": 6880
       },
       {
         "position": 8,
         "text": "وَلَا",
-        "start_ms": 6330,
-        "end_ms": 6630
+        "start_ms": 7170,
+        "end_ms": 7270
       },
       {
         "position": 9,
         "text": "ٱلضَّآلِّينَ",
-        "start_ms": 6640,
-        "end_ms": 13187
+        "start_ms": 7720,
+        "end_ms": 14950
       }
     ]
   },
@@ -233,25 +233,25 @@
     "surah_id": 108,
     "ayah_id": 1,
     "audio_file": "108001.mp3",
-    "total_duration_ms": 6659,
+    "total_duration_ms": 8942,
     "words": [
       {
         "position": 1,
         "text": "إِنَّآ",
         "start_ms": 0,
-        "end_ms": 2120
+        "end_ms": 1200
       },
       {
         "position": 2,
         "text": "أَعْطَيْنَٰكَ",
-        "start_ms": 2130,
-        "end_ms": 4970
+        "start_ms": 2680,
+        "end_ms": 5040
       },
       {
         "position": 3,
         "text": "ٱلْكَوْثَرَ",
-        "start_ms": 4980,
-        "end_ms": 6659
+        "start_ms": 5560,
+        "end_ms": 8942
       }
     ]
   },
@@ -259,25 +259,25 @@
     "surah_id": 108,
     "ayah_id": 2,
     "audio_file": "108002.mp3",
-    "total_duration_ms": 3504,
+    "total_duration_ms": 5807,
     "words": [
       {
         "position": 1,
         "text": "فَصَلِّ",
         "start_ms": 0,
-        "end_ms": 910
+        "end_ms": 920
       },
       {
         "position": 2,
         "text": "لِرَبِّكَ",
-        "start_ms": 920,
-        "end_ms": 1970
+        "start_ms": 2280,
+        "end_ms": 2720
       },
       {
         "position": 3,
         "text": "وَٱنْحَرْ",
-        "start_ms": 1980,
-        "end_ms": 3504
+        "start_ms": 3040,
+        "end_ms": 5807
       }
     ]
   },
@@ -285,31 +285,31 @@
     "surah_id": 108,
     "ayah_id": 3,
     "audio_file": "108003.mp3",
-    "total_duration_ms": 5192,
+    "total_duration_ms": 7845,
     "words": [
       {
         "position": 1,
         "text": "إِنَّ",
         "start_ms": 0,
-        "end_ms": 1660
+        "end_ms": 70
       },
       {
         "position": 2,
         "text": "شَانِئَكَ",
-        "start_ms": 1670,
-        "end_ms": 2750
+        "start_ms": 1320,
+        "end_ms": 2800
       },
       {
         "position": 3,
         "text": "هُوَ",
-        "start_ms": 2760,
-        "end_ms": 3220
+        "start_ms": 3080,
+        "end_ms": 3560
       },
       {
         "position": 4,
         "text": "ٱلْأَبْتَرُ",
-        "start_ms": 3230,
-        "end_ms": 5192
+        "start_ms": 4360,
+        "end_ms": 7845
       }
     ]
   },
@@ -317,31 +317,31 @@
     "surah_id": 112,
     "ayah_id": 1,
     "audio_file": "112001.mp3",
-    "total_duration_ms": 2917,
+    "total_duration_ms": 5833,
     "words": [
       {
         "position": 1,
         "text": "قُلْ",
         "start_ms": 0,
-        "end_ms": 390
+        "end_ms": 70
       },
       {
         "position": 2,
         "text": "هُوَ",
-        "start_ms": 400,
-        "end_ms": 790
+        "start_ms": 1200,
+        "end_ms": 1680
       },
       {
         "position": 3,
         "text": "ٱللَّهُ",
-        "start_ms": 800,
-        "end_ms": 1640
+        "start_ms": 2250,
+        "end_ms": 2350
       },
       {
         "position": 4,
         "text": "أَحَدٌ",
-        "start_ms": 1650,
-        "end_ms": 2917
+        "start_ms": 3960,
+        "end_ms": 5833
       }
     ]
   },
@@ -349,19 +349,19 @@
     "surah_id": 112,
     "ayah_id": 2,
     "audio_file": "112002.mp3",
-    "total_duration_ms": 2486,
+    "total_duration_ms": 5050,
     "words": [
       {
         "position": 1,
         "text": "ٱللَّهُ",
         "start_ms": 0,
-        "end_ms": 980
+        "end_ms": 1150
       },
       {
         "position": 2,
         "text": "ٱلصَّمَدُ",
-        "start_ms": 990,
-        "end_ms": 2486
+        "start_ms": 2720,
+        "end_ms": 5050
       }
     ]
   },
@@ -369,31 +369,31 @@
     "surah_id": 112,
     "ayah_id": 3,
     "audio_file": "112003.mp3",
-    "total_duration_ms": 2917,
+    "total_duration_ms": 5938,
     "words": [
       {
         "position": 1,
         "text": "لَمْ",
         "start_ms": 0,
-        "end_ms": 390
+        "end_ms": 680
       },
       {
         "position": 2,
         "text": "يَلِدْ",
-        "start_ms": 400,
-        "end_ms": 1000
+        "start_ms": 880,
+        "end_ms": 1880
       },
       {
         "position": 3,
         "text": "وَلَمْ",
-        "start_ms": 1010,
-        "end_ms": 1720
+        "start_ms": 2080,
+        "end_ms": 3000
       },
       {
         "position": 4,
         "text": "يُولَدْ",
-        "start_ms": 1730,
-        "end_ms": 2917
+        "start_ms": 3320,
+        "end_ms": 5938
       }
     ]
   },
@@ -401,37 +401,37 @@
     "surah_id": 112,
     "ayah_id": 4,
     "audio_file": "112004.mp3",
-    "total_duration_ms": 4805,
+    "total_duration_ms": 8132,
     "words": [
       {
         "position": 1,
         "text": "وَلَمْ",
         "start_ms": 0,
-        "end_ms": 650
+        "end_ms": 800
       },
       {
         "position": 2,
         "text": "يَكُن",
-        "start_ms": 660,
-        "end_ms": 1130
+        "start_ms": 1040,
+        "end_ms": 1600
       },
       {
         "position": 3,
         "text": "لَّهُۥ",
-        "start_ms": 1140,
-        "end_ms": 2040
+        "start_ms": 2570,
+        "end_ms": 2670
       },
       {
         "position": 4,
         "text": "كُفُوًا",
-        "start_ms": 2050,
-        "end_ms": 2950
+        "start_ms": 3360,
+        "end_ms": 4360
       },
       {
         "position": 5,
         "text": "أَحَدٌۢ",
-        "start_ms": 2960,
-        "end_ms": 4805
+        "start_ms": 5520,
+        "end_ms": 8132
       }
     ]
   },
@@ -439,31 +439,31 @@
     "surah_id": 113,
     "ayah_id": 1,
     "audio_file": "113001.mp3",
-    "total_duration_ms": 3418,
+    "total_duration_ms": 6304,
     "words": [
       {
         "position": 1,
         "text": "قُلْ",
         "start_ms": 0,
-        "end_ms": 340
+        "end_ms": 70
       },
       {
         "position": 2,
         "text": "أَعُوذُ",
-        "start_ms": 350,
-        "end_ms": 1200
+        "start_ms": 1000,
+        "end_ms": 2160
       },
       {
         "position": 3,
         "text": "بِرَبِّ",
-        "start_ms": 1210,
-        "end_ms": 2080
+        "start_ms": 2370,
+        "end_ms": 2470
       },
       {
         "position": 4,
         "text": "ٱلْفَلَقِ",
-        "start_ms": 2090,
-        "end_ms": 3418
+        "start_ms": 4280,
+        "end_ms": 6304
       }
     ]
   },
@@ -471,31 +471,31 @@
     "surah_id": 113,
     "ayah_id": 2,
     "audio_file": "113002.mp3",
-    "total_duration_ms": 3592,
+    "total_duration_ms": 5468,
     "words": [
       {
         "position": 1,
         "text": "مِن",
         "start_ms": 0,
-        "end_ms": 1300
+        "end_ms": 70
       },
       {
         "position": 2,
         "text": "شَرِّ",
-        "start_ms": 1310,
-        "end_ms": 2020
+        "start_ms": 1240,
+        "end_ms": 2240
       },
       {
         "position": 3,
         "text": "مَا",
-        "start_ms": 2030,
-        "end_ms": 2370
+        "start_ms": 2530,
+        "end_ms": 2630
       },
       {
         "position": 4,
         "text": "خَلَقَ",
-        "start_ms": 2380,
-        "end_ms": 3592
+        "start_ms": 3170,
+        "end_ms": 5468
       }
     ]
   },
@@ -503,37 +503,37 @@
     "surah_id": 113,
     "ayah_id": 3,
     "audio_file": "113003.mp3",
-    "total_duration_ms": 4989,
+    "total_duration_ms": 7688,
     "words": [
       {
         "position": 1,
         "text": "وَمِن",
         "start_ms": 0,
-        "end_ms": 1410
+        "end_ms": 70
       },
       {
         "position": 2,
         "text": "شَرِّ",
-        "start_ms": 1420,
-        "end_ms": 2100
+        "start_ms": 1240,
+        "end_ms": 2160
       },
       {
         "position": 3,
         "text": "غَاسِقٍ",
-        "start_ms": 2110,
-        "end_ms": 3190
+        "start_ms": 2520,
+        "end_ms": 3920
       },
       {
         "position": 4,
         "text": "إِذَا",
-        "start_ms": 3200,
-        "end_ms": 3820
+        "start_ms": 4920,
+        "end_ms": 5080
       },
       {
         "position": 5,
         "text": "وَقَبَ",
-        "start_ms": 3830,
-        "end_ms": 4989
+        "start_ms": 5640,
+        "end_ms": 7688
       }
     ]
   },
@@ -541,37 +541,37 @@
     "surah_id": 113,
     "ayah_id": 4,
     "audio_file": "113004.mp3",
-    "total_duration_ms": 5964,
+    "total_duration_ms": 9229,
     "words": [
       {
         "position": 1,
         "text": "وَمِن",
         "start_ms": 0,
-        "end_ms": 1400
+        "end_ms": 70
       },
       {
         "position": 2,
         "text": "شَرِّ",
-        "start_ms": 1410,
-        "end_ms": 2140
+        "start_ms": 1520,
+        "end_ms": 2440
       },
       {
         "position": 3,
         "text": "ٱلنَّفَّٰثَٰتِ",
-        "start_ms": 2150,
-        "end_ms": 4360
+        "start_ms": 3400,
+        "end_ms": 5920
       },
       {
         "position": 4,
         "text": "فِى",
-        "start_ms": 4370,
-        "end_ms": 4590
+        "start_ms": 6330,
+        "end_ms": 6430
       },
       {
         "position": 5,
         "text": "ٱلْعُقَدِ",
-        "start_ms": 4600,
-        "end_ms": 5964
+        "start_ms": 6760,
+        "end_ms": 9229
       }
     ]
   },
@@ -579,37 +579,37 @@
     "surah_id": 113,
     "ayah_id": 5,
     "audio_file": "113005.mp3",
-    "total_duration_ms": 5604,
+    "total_duration_ms": 7766,
     "words": [
       {
         "position": 1,
         "text": "وَمِن",
         "start_ms": 0,
-        "end_ms": 1270
+        "end_ms": 70
       },
       {
         "position": 2,
         "text": "شَرِّ",
-        "start_ms": 1280,
-        "end_ms": 1920
+        "start_ms": 1480,
+        "end_ms": 2360
       },
       {
         "position": 3,
         "text": "حَاسِدٍ",
-        "start_ms": 1930,
-        "end_ms": 3070
+        "start_ms": 2640,
+        "end_ms": 4000
       },
       {
         "position": 4,
         "text": "إِذَا",
-        "start_ms": 3080,
-        "end_ms": 3640
+        "start_ms": 4960,
+        "end_ms": 5160
       },
       {
         "position": 5,
         "text": "حَسَدَ",
-        "start_ms": 3650,
-        "end_ms": 5604
+        "start_ms": 5720,
+        "end_ms": 7766
       }
     ]
   },
@@ -617,31 +617,31 @@
     "surah_id": 114,
     "ayah_id": 1,
     "audio_file": "114001.mp3",
-    "total_duration_ms": 6071,
+    "total_duration_ms": 7923,
     "words": [
       {
         "position": 1,
         "text": "قُلْ",
         "start_ms": 0,
-        "end_ms": 330
+        "end_ms": 70
       },
       {
         "position": 2,
         "text": "أَعُوذُ",
-        "start_ms": 340,
-        "end_ms": 1150
+        "start_ms": 840,
+        "end_ms": 2040
       },
       {
         "position": 3,
         "text": "بِرَبِّ",
-        "start_ms": 1160,
-        "end_ms": 2050
+        "start_ms": 2290,
+        "end_ms": 2390
       },
       {
         "position": 4,
         "text": "ٱلنَّاسِ",
-        "start_ms": 2060,
-        "end_ms": 6071
+        "start_ms": 6510,
+        "end_ms": 7923
       }
     ]
   },
@@ -649,19 +649,19 @@
     "surah_id": 114,
     "ayah_id": 2,
     "audio_file": "114002.mp3",
-    "total_duration_ms": 5211,
+    "total_duration_ms": 4710,
     "words": [
       {
         "position": 1,
         "text": "مَلِكِ",
         "start_ms": 0,
-        "end_ms": 610
+        "end_ms": 880
       },
       {
         "position": 2,
         "text": "ٱلنَّاسِ",
-        "start_ms": 620,
-        "end_ms": 5211
+        "start_ms": 3670,
+        "end_ms": 4710
       }
     ]
   },
@@ -669,19 +669,19 @@
     "surah_id": 114,
     "ayah_id": 3,
     "audio_file": "114003.mp3",
-    "total_duration_ms": 5292,
+    "total_duration_ms": 4971,
     "words": [
       {
         "position": 1,
         "text": "إِلَٰهِ",
         "start_ms": 0,
-        "end_ms": 840
+        "end_ms": 1160
       },
       {
         "position": 2,
         "text": "ٱلنَّاسِ",
-        "start_ms": 850,
-        "end_ms": 5292
+        "start_ms": 3970,
+        "end_ms": 4971
       }
     ]
   },
@@ -689,31 +689,31 @@
     "surah_id": 114,
     "ayah_id": 4,
     "audio_file": "114004.mp3",
-    "total_duration_ms": 7944,
+    "total_duration_ms": 9438,
     "words": [
       {
         "position": 1,
         "text": "مِن",
         "start_ms": 0,
-        "end_ms": 1380
+        "end_ms": 70
       },
       {
         "position": 2,
         "text": "شَرِّ",
-        "start_ms": 1390,
-        "end_ms": 2070
+        "start_ms": 1160,
+        "end_ms": 2080
       },
       {
         "position": 3,
         "text": "ٱلْوَسْوَاسِ",
-        "start_ms": 2080,
-        "end_ms": 3340
+        "start_ms": 2400,
+        "end_ms": 4440
       },
       {
         "position": 4,
         "text": "ٱلْخَنَّاسِ",
-        "start_ms": 3350,
-        "end_ms": 7944
+        "start_ms": 4800,
+        "end_ms": 9438
       }
     ]
   },
@@ -721,37 +721,37 @@
     "surah_id": 114,
     "ayah_id": 5,
     "audio_file": "114005.mp3",
-    "total_duration_ms": 7852,
+    "total_duration_ms": 10483,
     "words": [
       {
         "position": 1,
         "text": "ٱلَّذِى",
         "start_ms": 0,
-        "end_ms": 1060
+        "end_ms": 70
       },
       {
         "position": 2,
         "text": "يُوَسْوِسُ",
-        "start_ms": 1070,
-        "end_ms": 2080
+        "start_ms": 2080,
+        "end_ms": 3920
       },
       {
         "position": 3,
         "text": "فِى",
-        "start_ms": 2090,
-        "end_ms": 2460
+        "start_ms": 4130,
+        "end_ms": 4230
       },
       {
         "position": 4,
         "text": "صُدُورِ",
-        "start_ms": 2470,
-        "end_ms": 3460
+        "start_ms": 4920,
+        "end_ms": 6200
       },
       {
         "position": 5,
         "text": "ٱلنَّاسِ",
-        "start_ms": 3470,
-        "end_ms": 7852
+        "start_ms": 9410,
+        "end_ms": 10483
       }
     ]
   },
@@ -759,25 +759,25 @@
     "surah_id": 114,
     "ayah_id": 6,
     "audio_file": "114006.mp3",
-    "total_duration_ms": 8192,
+    "total_duration_ms": 8498,
     "words": [
       {
         "position": 1,
         "text": "مِنَ",
         "start_ms": 0,
-        "end_ms": 380
+        "end_ms": 800
       },
       {
         "position": 2,
         "text": "ٱلْجِنَّةِ",
-        "start_ms": 390,
-        "end_ms": 2580
+        "start_ms": 1400,
+        "end_ms": 3200
       },
       {
         "position": 3,
         "text": "وَٱلنَّاسِ",
-        "start_ms": 2590,
-        "end_ms": 8192
+        "start_ms": 3600,
+        "end_ms": 8498
       }
     ]
   }
