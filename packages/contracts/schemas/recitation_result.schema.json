@@ -28,7 +28,7 @@
     },
     "decision": { "enum": ["accepted", "error", "uncertain"] },
     "quality": {
-      "enum": ["ok", "silent", "too_short", "too_noisy"],
+      "enum": ["ok", "silent", "too_short", "too_noisy", "too_long"],
       "description": "Anything but ok is a quality rejection: not an attempt (FR-QUR-003, VAL-014)."
     },
     "findings": {

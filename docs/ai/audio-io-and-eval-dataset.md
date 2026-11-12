@@ -1,7 +1,7 @@
 # Quran audio input/output and evaluation dataset requirements
 
 - Owners: Qussai (AI 1) + Ismail (AI 2). Jira: KAN-9, KAN-27.
-- Version: v1.1, 2026-11-10 (v1.0 was 2026-11-05).
+- Version: v1.2, 2026-11-12 (v1.1 was 2026-11-10, v1.0 was 2026-11-05).
 - Based on: CRS v3.0 (FR-QUR-002..004, VAL-014, VAL-016, SEC-006, SEC-011, SEC-017, SEC-018),
   Architecture v3.0 (§7.3, §8.1–8.7), Roadmap v3.0 (weeks 2–7).
 - Related: `docs/contracts/ai-result.md` (the result), `docs/ai/teacher_annotation_guide.md`
@@ -10,29 +10,23 @@
 
 > 🔶 = proposal waiting for a decision. Everything else follows the CRS and Architecture.
 
-## What changed in v1.1
+## What changed in v1.2
 
-| Section | Change                                                                                           |
-| ------- | ------------------------------------------------------------------------------------------------ |
-| A.3     | Exact gate definitions, check order, known limits, and the 30 s duration guard (decided)         |
-| A.3     | Table of audio errors and their codes                                                            |
-| A.3     | No generative language model in this path; the decision is deterministic                         |
-| A.4     | Gate report fields added to the log. Phoneme diagnostics removed from request logs (NFR-OBS-001) |
-| B.4     | Restricted folder for per-recording model output used in offline error analysis 🔶               |
-| B.7     | The train split is consent-gated (SEC-017) and unused until a fine-tuning decision               |
-| B.8     | Guard rejections and gate evaluation explained                                                   |
-| Part C  | New: tests (done now, and planned for week 3)                                                    |
-| Open    | Items 1–2 updated, items 7–11 added                                                              |
+| Section | Change                                                                                     |
+| ------- | ------------------------------------------------------------------------------------------ |
+| A.3     | The gate now decodes any upload with ffmpeg and uses Silero VAD instead of an energy level |
+| A.3     | `too_long` (over 30 s) is a quality value in the contract, not an error                    |
+| A.3     | The "too short for the reference ayah" check is removed until the new word timings exist   |
+| Part C  | Gate tests removed. Only the contract test is kept                                         |
 
 ## Status in week 2
 
-| Piece                          | State                                                                                       |
-| ------------------------------ | ------------------------------------------------------------------------------------------- |
-| Quality gate (`audio.py`)      | Implemented and tested. **Not wired into the endpoints yet**                                |
-| Accepted input of the gate     | Only 16 kHz, mono, 16-bit PCM WAV. Browser files (WebM/Opus, MP4/AAC) are not read yet      |
-| Decode step (ffmpeg)           | Week 3. The gate is wired in after it                                                       |
-| Quality values in the contract | Unchanged: `ok`, `silent`, `too_short`, `too_noisy` (contract v3.0)                         |
-| `too_long`                     | Not a quality value. The duration guard raises an error. Contract change in week 3 (item 1) |
+| Piece                       | State                                                                      |
+| --------------------------- | -------------------------------------------------------------------------- |
+| Decode (ffmpeg) and gate    | Written (`app/audio.py`). Run from `scripts/run_real_audio.py` only        |
+| Endpoints                   | Mock only. The gate and the models are connected in week 3                 |
+| Quality values the contract | `ok`, `silent`, `too_short`, `too_noisy`, `too_long`                       |
+| Word timings                | None. The reference reciter and its timings are decided in a later session |
 
 ---
 
@@ -61,118 +55,72 @@ recording, so duration is checked after decoding (A.3).
 
 ### A.3 What the AI service does with the audio
 
-| Step         | Rule                                                                                                                                                                                                                                                  |
-| ------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Read         | The upload is read up to the 5 MB limit plus one byte, so an oversized file is rejected without loading it fully                                                                                                                                      |
-| Convert      | ffmpeg → 16 kHz, mono, 16-bit PCM WAV. Temporary file only, deleted after the analysis (week 3)                                                                                                                                                       |
-| Quality gate | Frame energy + clipping checks today (`audio.py`). Silero VAD and an SNR estimate in week 3. Result: `quality` = `ok`, `silent`, `too_short` or `too_noisy`                                                                                           |
-| Reference    | The AI service loads the expected ayah (text and word timings) from the licensed reference files by `surah` + `ayah`. It never searches the whole Quran                                                                                               |
-| Models       | quran-muaalem (pronunciation and tajweed) and whisper-quran (word comparison). Disagreement → `ERR_TECH_MODELS_DISAGREE` → `uncertain`. No generative language model is used in this path: the decision is deterministic and rule-based (`policy.py`) |
-| Output       | One result in the contract format. Model text is never returned to the API                                                                                                                                                                            |
+| Step         | Rule                                                                                                                                                                                                                                                        |
+| ------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Read         | The upload is read up to the 5 MB limit plus one byte, so an oversized file is rejected without loading it fully                                                                                                                                            |
+| Convert      | ffmpeg → 16 kHz, mono samples. The upload is written to a temporary folder that is deleted right after. ffmpeg runs without a shell, with a 15 s timeout, and decodes at most 31 s, so a small file that holds a very long recording is never decoded fully |
+| Quality gate | Silero VAD and clipping checks (`audio.py`). Result: `quality` = `ok`, `silent`, `too_short`, `too_noisy` or `too_long`                                                                                                                                     |
+| Reference    | The AI service loads the expected ayah text from `reference_quran_text.json` by `surah` + `ayah` (`app/reference.py`). It never searches the whole Quran                                                                                                    |
+| Models       | quran-muaalem (pronunciation and tajweed) and whisper-quran (word comparison). Merging the two is week 3. No generative language model is used in this path: the decision is deterministic and rule-based (`policy.py`)                                     |
+| Output       | One result in the contract format. Model text is never returned to the API                                                                                                                                                                                  |
 
-**Decode safety** 🔶 (week 3): ffmpeg runs without a shell, with a timeout and a cap on the decoded
-duration slightly above the guard, one temporary folder per request, removed in a `finally`. The
-reason: a very small compressed file can decode into a very long clip.
+#### Gate measurements
 
-#### Target format
-
-16 kHz, mono, 16-bit PCM WAV. The hard requirements of the models are the 16 kHz rate and mono
-(quran-muaalem documents 16000 Hz as mandatory); 16-bit WAV is our own convention for the temporary
-file. The gate checks the header and raises a specific error for anything else (table below).
-
-#### Gate measurements (exact definitions)
-
-| Measure        | Definition                                                                                          |
-| -------------- | --------------------------------------------------------------------------------------------------- |
-| Frame          | 30 ms window (480 samples at 16 kHz). A shorter tail at the end is ignored for speech counting      |
-| Speech frame   | Frame whose RMS is at least 200 on the 16-bit scale (about −44 dBFS)                                |
-| Speech seconds | Number of speech frames × 30 ms                                                                     |
-| Speech ratio   | Speech frames ÷ all frames, over the **whole decoded clip** (leading and trailing silence included) |
-| Clipped sample | A sample with an absolute value of at least 32000 (the 16-bit maximum is 32767)                     |
-| Clipped ratio  | Clipped samples ÷ all samples                                                                       |
-| RMS            | RMS of the whole clip, 16-bit scale (logged only)                                                   |
+| Measure        | Definition                                                              |
+| -------------- | ----------------------------------------------------------------------- |
+| Duration       | Decoded samples ÷ 16000                                                 |
+| Speech seconds | Total length of the speech parts Silero VAD finds                       |
+| Speech ratio   | Speech seconds ÷ duration, over the whole clip                          |
+| Clipped ratio  | Samples with an absolute value of at least 32000 (16-bit) ÷ all samples |
+| RMS            | RMS of the whole clip (logged only)                                     |
 
 #### Order of checks
 
 The first match wins.
 
-1. Header or format problem → **error** (table below).
-2. Duration above the guard (30 s) → **error** `AUDIO_TOO_LONG`. Checked from the header, before any
-   sample is read.
-3. Clipped ratio above 1% → `too_noisy`.
-4. Less than one frame of audio (or an empty file) → `too_short`.
+1. The file cannot be decoded → **error** (table below).
+2. Duration above 30 s → `too_long`.
+3. Duration below 30 ms (or empty) → `too_short`.
+4. Clipped ratio above 1% → `too_noisy`.
 5. Speech seconds below 0.3 → `silent`.
-6. Speech seconds below 40% of the reference ayah length → `too_short`. Skipped when no reference
-   duration is available.
-7. Speech ratio below 0.30 → `too_noisy`.
-8. Otherwise → `ok`.
+6. Speech ratio below 0.30 → `too_noisy`.
+7. Otherwise → `ok`.
 
-#### Quality gate values 🔶
+All values are starting values, named constants at the top of `services/ai/app/audio.py`, tuned
+later against real recordings.
 
-All are starting values, implemented as named constants in `services/ai/app/audio.py` and tuned in
-weeks 2–3 against the `poor_audio` labels.
+#### Why 30 s
 
-| Reason      | Rule                                                     | Constant                                                              |
-| ----------- | -------------------------------------------------------- | --------------------------------------------------------------------- |
-| `silent`    | Less than 0.3 s of speech                                | `MIN_SPEECH_SECONDS`, `MIN_RMS_ENERGY`                                |
-| `too_short` | Speech shorter than 40% of the reference ayah length     | `MIN_SPEECH_VS_REFERENCE`                                             |
-| `too_noisy` | More than 1% clipped samples, or speech ratio below 0.30 | `MAX_CLIPPING_RATIO`, `CLIPPING_SAMPLE_THRESHOLD`, `MIN_SPEECH_RATIO` |
-
-#### Known limits of the week 2 gate
-
-- Speech detection is an absolute energy threshold. **Steady background noise counts as speech**, so
-  noise alone can come back `ok`.
-- `too_noisy` from the speech ratio really means "mostly silence or very quiet". It does not measure
-  noise. An SNR estimate (speech level against non-speech level) is planned for week 3 (item 7).
-- A child who pauses a lot has a low ratio. The 0.30 floor is therefore tuned on real children
-  (item 8), never on synthetic audio.
-- The reference check needs the reference duration of the ayah. Where it is missing the check is
-  skipped, and the log says so (`referenceAvailable: false`).
-
-#### Maximum length: decision
-
-The 30 s limit (taxonomy item 5.8) is kept as an **early guard**, not as a quality value.
-
-- It raises `AudioTooLongError` (`AUDIO_TOO_LONG`) before any sample is read.
-- It is **never reported as `too_noisy`**: the child would be told to move closer to the microphone.
-- Why 30 s: the longest reference ayah is 12.8 s, children often read at half the reciter's speed
-  (about 26 s), and Whisper's model input is a 30 s window, so longer audio has to be chunked or is
-  cut, and a cut would create false omissions.
-- The formal `too_long` quality in the contract, and the child message for it, are a week 3 change
-  made together with Qussai and the API team (items 1 and 10). Contract v3.0 stays as it is until then.
+The longest prototype ayah takes about 13 s to recite, children often read at half the reciter's
+speed (about 26 s), and Whisper's model input is a 30 s window, so longer audio would be cut and
+create false omissions. A `too_long` recording is never reported as `too_noisy`: the child would be
+told to move closer to the microphone. The child hears `FEEDBACK_AUDIO_TOO_LONG` (text by Ismail).
 
 #### Audio errors
 
-These are not quality results. The audio could not be checked, or the guard stopped it.
+These are not quality results: the audio could not be read at all. All are `AudioError` with a code.
 
-| Error class                   | Code                       | Meaning                                        |
-| ----------------------------- | -------------------------- | ---------------------------------------------- |
-| `InvalidWavError`             | `INVALID_WAV`              | Not a readable WAV (for example, WebM bytes)   |
-| `UnsupportedSampleRateError`  | `UNSUPPORTED_SAMPLE_RATE`  | Not 16 kHz                                     |
-| `UnsupportedChannelsError`    | `UNSUPPORTED_CHANNELS`     | Not mono                                       |
-| `UnsupportedSampleWidthError` | `UNSUPPORTED_SAMPLE_WIDTH` | Not 16-bit                                     |
-| `TruncatedAudioError`         | `AUDIO_TRUNCATED`          | The file holds less audio than its header says |
-| `AudioTooLongError`           | `AUDIO_TOO_LONG`           | Above the 30 s guard                           |
+| Code             | Meaning                           |
+| ---------------- | --------------------------------- |
+| `EMPTY_AUDIO`    | The file has no bytes             |
+| `DECODE_FAILED`  | ffmpeg cannot read it (not audio) |
+| `DECODE_TIMEOUT` | ffmpeg took longer than 15 s      |
 
-The three format errors share the base class `UnsupportedWavFormatError` (code
-`UNSUPPORTED_WAV_FORMAT`), and all errors share `AudioProcessingError` (code
-`AUDIO_PROCESSING_ERROR`). After the ffmpeg step exists, a format error
-means a bug on our side, and a decode failure means a bad upload. How each code becomes an API
-response is decided in week 3 (item 10). The AI service error shape stays
-`{"error": {"code", "message"}}`.
+How each code becomes an API response is decided in week 3 (item 10). The AI service error shape
+stays `{"error": {"code", "message"}}`.
 
 ### A.4 Output
 
 The result format is `docs/contracts/ai-result.md`. Debug detail stays inside the AI service:
 
-| Logged per request (no audio, no names)                                                                                                    | Why                                                                    |
-| ------------------------------------------------------------------------------------------------------------------------------------------ | ---------------------------------------------------------------------- |
-| `attemptId`, `surah`, `ayah`, `level`                                                                                                      | Join with the attempt in the API                                       |
-| Gate report: `quality`, `durationSeconds`, `speechSeconds`, `speechRatio`, `clippedRatio`, `rms`, `referenceSeconds`, `referenceAvailable` | Architecture §8.7 and quality-gate tuning (`GateReport.to_log_dict()`) |
-| The error `code` when the audio was rejected by an error                                                                                   | Count guard and format rejections                                      |
-| Per model: name, version, status (`ok`, `timeout`, `error`, `disabled`), inference ms                                                      | Latency target (NFR-PERF-003), kill switch                             |
-| Per finding: `code`, `wordIndex`, `confidence` (the contract fields, no text)                                                              | Error analysis without any transcript                                  |
-| Time per stage (decode, gate, each model) — week 3                                                                                         | Find the slow step                                                     |
+| Logged per request (no audio, no names)                                                          | Why                                                                           |
+| ------------------------------------------------------------------------------------------------ | ----------------------------------------------------------------------------- |
+| `attemptId`, `surah`, `ayah`, `level`                                                            | Join with the attempt in the API                                              |
+| Gate report: `quality`, `durationSeconds`, `speechSeconds`, `speechRatio`, `clippedRatio`, `rms` | Architecture §8.7 and quality-gate tuning (the report from `check_quality()`) |
+| The error `code` when the audio was rejected by an error                                         | Count guard and format rejections                                             |
+| Per model: name, version, status (`ok`, `timeout`, `error`, `disabled`), inference ms            | Latency target (NFR-PERF-003), kill switch                                    |
+| Per finding: `code`, `wordIndex`, `confidence` (the contract fields, no text)                    | Error analysis without any transcript                                         |
+| Time per stage (decode, gate, each model) — week 3                                               | Find the slow step                                                            |
 
 Logs never contain audio, transcripts, phoneme strings of what the child said, child names or
 parent data (NFR-OBS-001, SEC-011). Contract v3.0 carries no phoneme or transcript text, and the
@@ -316,33 +264,9 @@ and versions only, no audio, transcripts or phoneme text. Runs are kept for the 
 
 ## Part C. Tests
 
-Code: `services/ai/tests/test_audio.py`. Tests use synthetic audio built in the test, never a
-child's recording and never a binary file in git.
-
-### C.1 Done in week 2
-
-| Area                   | What the tests pin                                                                                                                                                                 |
-| ---------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Format and header      | Wrong sample rate, stereo, 8-bit, non-WAV bytes and truncated files each raise their own error and code                                                                            |
-| Duration guard         | The limit boundary, and that a too long clip is an error and never a quality                                                                                                       |
-| Thresholds, both sides | 0.3 s of speech, the energy threshold, the 0.30 ratio floor, 40% of the reference, 1% clipped (0.9%, exactly 1.0%, 1.1%), the clipping level (31999 against 32000, negative peaks) |
-| Edge cases             | Empty WAV, audio shorter than one frame, no reference duration                                                                                                                     |
-| Order of checks        | Clipping wins over silent, silent wins over the reference length                                                                                                                   |
-| Report                 | Measured values, `referenceAvailable`, JSON-safe log fields with no audio                                                                                                          |
-
-The tests were also checked by changing the code 24 ways (constants, comparison operators, removed
-checks, swapped order); every change made a test fail.
-
-### C.2 Planned for week 3
-
-| Area                      | Test                                                                                                                            |
-| ------------------------- | ------------------------------------------------------------------------------------------------------------------------------- |
-| Format matrix             | Tone plus noise made with ffmpeg in WebM/Opus, MP4/AAC, Ogg, WAV and MP3 all come out as 16 kHz mono 16-bit                     |
-| Endpoint                  | Oversized file → `FILE_TOO_LARGE`; corrupt bytes and a wrong MIME type → a typed 4xx, never a 500; empty file; unsupported ayah |
-| Decode safety             | A small file that decodes into a very long clip stops at the decode cap                                                         |
-| Temporary files           | The temporary folder is empty after every request, including failed ones                                                        |
-| Performance (GPU machine) | p50 and p95 per stage for 5 s and 30 s clips; N parallel requests keep memory flat and `/health` responsive                     |
-| Gate evaluation           | Precision and recall against `poor_audio` labels (offline, B.8), not a unit test                                                |
+The gate has no unit tests (decision of 2026-11-12). It is checked by running
+`services/ai/scripts/run_real_audio.py` on real recordings. The only test in the AI service is
+`tests/test_contract.py`, which keeps the result format in line with the JSON Schema.
 
 ---
 
@@ -350,14 +274,14 @@ checks, swapped order); every change made a test fail.
 
 | #   | Item                                                                                                                            | Who decides                   | Needed by                       |
 | --- | ------------------------------------------------------------------------------------------------------------------------------- | ----------------------------- | ------------------------------- |
-| 1   | Maximum length: the 30 s guard is decided (A.3). The `too_long` contract change is open                                         | Qussai + Ismail + API team    | Week 3                          |
+| 1   | ✅ Decided: 30 s, `quality: too_long` in the contract                                                                           | Qussai                        | Done                            |
 | 2   | Quality gate values (A.3): starting values are in the code, to be tuned                                                         | Qussai, from labels           | Week 3                          |
 | 3   | Split sizes (B.7)                                                                                                               | Qussai + Ismail               | Week 3                          |
 | 4   | Target numbers (B.8)                                                                                                            | Mohammad, from week 4 numbers | Week 4                          |
 | 5   | Who keeps the id-to-family list (B.3)                                                                                           | Mohammad                      | Week 2, before recordings start |
 | 6   | Retention of evaluation recordings after the pilot (OD-04)                                                                      | Mohammad                      | Week 3                          |
-| 7   | Noise detection: SNR estimate and Silero VAD instead of the energy threshold                                                    | Qussai                        | Week 3                          |
+| 7   | Noise detection: Silero VAD is in. An SNR estimate is still open                                                                | Qussai                        | Week 3                          |
 | 8   | Speech ratio definition (whole clip or trimmed) and its floor, from real children                                               | Qussai + Ismail               | Week 3                          |
 | 9   | Browser capture: format and constraints (echo cancellation, noise suppression, gain), from a capture test with adult volunteers | Osama + Ismail                | Week 3                          |
-| 10  | API response for each audio error code, and the child message for `too_long`                                                    | Ahmad + Qussai + Ismail       | Week 3                          |
+| 10  | API response for each audio error code. Text of `FEEDBACK_AUDIO_TOO_LONG`                                                       | Ahmad + Qussai + Ismail       | Week 3                          |
 | 11  | Reject an unsupported surah/ayah pair before any processing                                                                     | Qussai                        | Week 3                          |
