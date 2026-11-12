@@ -11,8 +11,10 @@ import {
   updateChild,
   archiveChild,
 } from "../controllers/childrenController.js";
+import { apiLimiter } from "../middlewares/rateLimiter.js";
 
 const router = Router();
+router.use(apiLimiter);
 
 router.use(authenticate, authorize("parent"), loadFamily);
 

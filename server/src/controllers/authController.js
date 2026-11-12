@@ -37,7 +37,7 @@ export async function registerParent(req, res) {
 export async function login(req, res) {
   const { email, password } = req.body;
 
-  const user = await User.findOne({ email }).select("+passwordHash");
+  const user = await User.findOne({ email: String(email) }).select("+passwordHash");
 
   const passwordMatches = await bcrypt.compare(password, user ? user.passwordHash : DUMMY_HASH);
 

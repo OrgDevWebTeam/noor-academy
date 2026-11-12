@@ -14,8 +14,10 @@ import {
   updateCompetency,
   updateCompetencyStatus,
 } from "../controllers/curriculumController.js";
+import { apiLimiter } from "../middlewares/rateLimiter.js";
 
 const router = Router();
+router.use(apiLimiter);
 
 const staff = authorize("content_admin", "platform_admin");
 

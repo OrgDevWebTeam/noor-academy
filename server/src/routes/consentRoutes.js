@@ -5,8 +5,10 @@ import loadFamily from "../middlewares/loadFamily.js";
 import validate from "../middlewares/validate.js";
 import { createConsentSchema } from "../validations/consentValidation.js";
 import { createConsent, listConsents, getConsentStatus } from "../controllers/consentController.js";
+import { apiLimiter } from "../middlewares/rateLimiter.js";
 
 const router = Router();
+router.use(apiLimiter);
 
 router.use(authenticate, authorize("parent"), loadFamily);
 
