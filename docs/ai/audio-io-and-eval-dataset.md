@@ -21,12 +21,12 @@
 
 ## Status in week 2
 
-| Piece                       | State                                                                      |
-| --------------------------- | -------------------------------------------------------------------------- |
-| Decode (ffmpeg) and gate    | Written (`app/audio.py`). Run from `scripts/run_real_audio.py` only        |
-| Endpoints                   | Mock only. The gate and the models are connected in week 3                 |
-| Quality values the contract | `ok`, `silent`, `too_short`, `too_noisy`, `too_long`                       |
-| Word timings                | None. The reference reciter and its timings are decided in a later session |
+| Piece                       | State                                                                                                                |
+| --------------------------- | -------------------------------------------------------------------------------------------------------------------- |
+| Decode (ffmpeg) and gate    | Written (`app/audio.py`). Run from `scripts/run_real_audio.py` only                                                  |
+| Endpoints                   | Mock only. The gate and the models are connected in week 3                                                           |
+| Quality values the contract | `ok`, `silent`, `too_short`, `too_noisy`, `too_long`                                                                 |
+| Word timings                | Set by hand for the 25 ayat (`reference_word_timings.json`), validator passes. Not used by the adapters yet (week 3) |
 
 ---
 
