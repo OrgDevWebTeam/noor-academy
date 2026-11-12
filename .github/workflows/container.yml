@@ -25,15 +25,15 @@ jobs:
 
       - name: Runs and answers health checks
         run: |
-          docker run -d --name api -p 4000:4000 \
-            -e APP_ENV=local \
-            -e MONGODB_URI="mongodb://127.0.0.1:1/?directConnection=true" \
-            -e MONGODB_DB=ci \
-            -e LOG_LEVEL=warn \
+          docker run -d --name api -p 5000:5000 \
+            -e NODE_ENV=development \
+            -e DATABASE='mongodb://ci:<PASSWORD>@127.0.0.1:1/ci' \
+            -e DATABASE_PASSWORD=ci-password \
+            -e JWT_SECRET=ci-only-secret-at-least-32-characters-long \
             noor-api:ci
           ok=0
           for i in $(seq 1 30); do
-            if curl -fsS http://127.0.0.1:4000/v1/health; then ok=1; break; fi
+            if curl -fsS http://127.0.0.1:5000/api/v1/health; then ok=1; break; fi
             sleep 1
           done
           docker logs api
@@ -41,17 +41,16 @@ jobs:
 
       - name: Protected routes refuse anonymous requests
         run: |
-          code=$(curl -s -o /dev/null -w "%{http_code}" http://127.0.0.1:4000/v1/me)
-          echo "GET /v1/me -> $code"
+          code=$(curl -s -o /dev/null -w "%{http_code}" http://127.0.0.1:5000/api/v1/children)
+          echo "GET /api/v1/children -> $code"
           [ "$code" = "401" ]
 
-      - name: Production refuses an unsafe configuration
+      - name: Production refuses an invalid configuration
         run: |
-          # Local database, no TLS and no identity provider: the app must refuse to start.
+          # Production with a missing/short secret and no database: the app must refuse to start.
           if docker run --rm \
-            -e APP_ENV=production -e NODE_ENV=production \
-            -e MONGODB_URI="mongodb://127.0.0.1:27017/" -e MONGODB_DB=x \
+            -e NODE_ENV=production -e JWT_SECRET=short \
             noor-api:ci; then
-            echo "The container started with an unsafe production configuration"
+            echo "The container started with an invalid production configuration"
             exit 1
           fi
