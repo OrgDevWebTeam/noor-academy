@@ -8,7 +8,7 @@ from pydantic import BaseModel, Field, model_validator
 
 Category = Literal["memorization", "pronunciation", "tajweed", "technical"]
 Decision = Literal["accepted", "error", "uncertain"]
-Quality = Literal["ok", "silent", "too_short", "too_noisy"]
+Quality = Literal["ok", "silent", "too_short", "too_noisy", "too_long"]
 Level = Literal["beginner", "intermediate", "advanced"]
 ErrorCode = Literal[
     "ERR_MEM_OMISSION",

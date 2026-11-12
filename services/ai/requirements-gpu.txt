@@ -1,0 +1,10 @@
+# The real models, for the GPU machine only (not in the mock Docker image).
+# Install torch first from the CUDA index that matches the driver, for example CUDA 13:
+#   pip install torch==2.14.1 --index-url https://download.pytorch.org/whl/cu130
+torch==2.14.1
+numpy>=2.2.6
+# quran-muaalem does not work with transformers 5
+transformers==4.57.6
+quran-muaalem==0.3.0
+quran-transcript==0.6.4
+silero-vad==6.2.3

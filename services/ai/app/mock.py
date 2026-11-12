@@ -41,8 +41,3 @@ def mock_recitation(attempt_id, audio_size, ayah, level="beginner", processing_m
     decision, findings = decide(findings, level)
     return _result(attempt_id, decision, findings=findings, processing_ms=processing_ms)
 
-
-def mock_arabic_word(attempt_id, expected_word, processing_ms=0):
-    # Accepted unless no expected word was sent
-    decision = "accepted" if expected_word.strip() else "error"
-    return _result(attempt_id, decision, processing_ms=processing_ms)

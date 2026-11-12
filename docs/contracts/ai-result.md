@@ -45,22 +45,12 @@ Checks one recorded ayah.
 | Form field  | Type    | Meaning                                                                                            |
 | ----------- | ------- | -------------------------------------------------------------------------------------------------- |
 | `audio`     | file    | The child's recording. Audio only, max 5 MB. Input rules in `docs/ai/audio-io-and-eval-dataset.md` |
-| `attemptId` | text    | Noor attempt id (MongoDB id as text)                                                               |
+| `attemptId` | text    | Noor attempt id (a UUID made by the API)                                                           |
 | `surah`     | integer | Surah number (1–114)                                                                               |
 | `ayah`      | integer | Ayah number (from 1)                                                                               |
 | `level`     | text    | `beginner`, `intermediate` or `advanced`. Decides what stops the child (CRS §5.4)                  |
 
-### `POST /v1/arabic/word`
-
-Checks one word read aloud in the Arabic track (FR-ARB-002).
-
-| Form field     | Type | Meaning                        |
-| -------------- | ---- | ------------------------------ |
-| `audio`        | file | The child's recording          |
-| `attemptId`    | text | Noor attempt id                |
-| `expectedWord` | text | The word the child should read |
-
-Returns the same result. `findings` is usually empty; the decision is what matters.
+The Arabic word check (`POST /v1/arabic/word`, FR-ARB-002) is added in week 5.
 
 ### Errors from the AI service
 
@@ -70,11 +60,11 @@ Same shape as the API:
 { "error": { "code": "MODELS_NOT_READY", "message": "Real models are not installed yet" } }
 ```
 
-| Status | Code               | When                                          |
-| ------ | ------------------ | --------------------------------------------- |
-| 400    | `VALIDATION_ERROR` | A form field is missing or wrong              |
-| 400    | `FILE_TOO_LARGE`   | Audio over 5 MB                               |
-| 503    | `MODELS_NOT_READY` | `MOCK_MODE=false` and no real model is loaded |
+| Status | Code               | When                                                    |
+| ------ | ------------------ | ------------------------------------------------------- |
+| 400    | `VALIDATION_ERROR` | A form field is missing or wrong                        |
+| 400    | `FILE_TOO_LARGE`   | Audio over 5 MB                                         |
+| 503    | `MODELS_NOT_READY` | `MOCK_MODE=false` (real models are connected in week 3) |
 
 ## The result
 
@@ -84,7 +74,7 @@ Same shape as the API:
 | `model`        | text    | Which model produced the result: `mock`, `quran-muaalem`, `whisper-quran`, `faster-whisper`, `combined`, or `none` (API fallback) |
 | `modelVersion` | text    | Exact model revision (not just the package name). OPS-008                                                                         |
 | `decision`     | text    | `accepted`, `error` or `uncertain` (from the decision policy below)                                                               |
-| `quality`      | text    | `ok`, or a reject reason: `silent`, `too_short`, `too_noisy`                                                                      |
+| `quality`      | text    | `ok`, or a reject reason: `silent`, `too_short`, `too_noisy`, `too_long` (over 30 s)                                              |
 | `findings`     | list    | Problems found, at most one per word (can be empty)                                                                               |
 | `processingMs` | integer | How long the analysis took                                                                                                        |
 
@@ -129,7 +119,8 @@ before the extra word.
   `messageKey`. Whisper transcripts never leave the AI service.
 - **Quality rejections are not attempts** (FR-QUR-003, VAL-014). When `quality` is not `ok`,
   `decision` is `uncertain` and `findings` is empty. The API marks the attempt `rejected`, and the
-  child hears `FEEDBACK_AUDIO_UNCLEAR` and records again.
+  child hears `FEEDBACK_AUDIO_UNCLEAR` and records again. For `too_long` the child hears
+  `FEEDBACK_AUDIO_TOO_LONG` instead (text to be written by Ismail).
 - **Decision policy** (Architecture §8.4):
   1. Any finding with `confidence` below `CONFIDENCE_THRESHOLD` → `uncertain`.
   2. Any `ERR_TAJ_UNMAPPED` or `ERR_TECH_MODELS_DISAGREE` finding → `uncertain`.
@@ -236,12 +227,12 @@ before the extra word.
 
 ## What changed from Ismail's schema 2.0 (PR #12)
 
-| Schema 2.0                                                                        | v3.0                                                                                               |
-| --------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------- |
-| snake_case fields                                                                 | camelCase                                                                                          |
-| `status` + `ayah_decision`                                                        | `decision` + `quality`                                                                             |
-| `quality_gate.reason`: `no_speech`, `high_noise`, `clipped`                       | `quality`: `silent`, `too_noisy` (clipped audio counts as `too_noisy`)                             |
-| `quality_gate.reason`: `too_long`                                                 | Open item (taxonomy 5.8): not in v3. Until decided, the 5 MB upload limit is the only length limit |
-| `requires_teacher_review`                                                         | Implied by `decision: "uncertain"`                                                                 |
-| `word_results`, `policy`, `models[]`, `telemetry`, `diagnostics`, `provider_code` | AI service logs + evaluation output                                                                |
-| `word_retry_count`                                                                | Counted by the API's session engine, if the retry-limit change request is approved                 |
+| Schema 2.0                                                                        | v3.0                                                                               |
+| --------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------- |
+| snake_case fields                                                                 | camelCase                                                                          |
+| `status` + `ayah_decision`                                                        | `decision` + `quality`                                                             |
+| `quality_gate.reason`: `no_speech`, `high_noise`, `clipped`                       | `quality`: `silent`, `too_noisy` (clipped audio counts as `too_noisy`)             |
+| `quality_gate.reason`: `too_long`                                                 | `quality`: `too_long` (recording over 30 s)                                        |
+| `requires_teacher_review`                                                         | Implied by `decision: "uncertain"`                                                 |
+| `word_results`, `policy`, `models[]`, `telemetry`, `diagnostics`, `provider_code` | AI service logs + evaluation output                                                |
+| `word_retry_count`                                                                | Counted by the API's session engine, if the retry-limit change request is approved |
