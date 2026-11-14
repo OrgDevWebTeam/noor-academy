@@ -85,6 +85,11 @@ jobs:
       - name: Install
         run: pip install -r requirements-dev.txt
 
+      - name: Cache MongoDB binary
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/mongodb-binaries
+          key: mongodb-binaries-${{ runner.os }}-7.0.14
       # Also checks the service against packages/contracts/schemas (the AI contract source of truth)
       - name: Test
         run: pytest
