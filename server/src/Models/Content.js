@@ -59,9 +59,6 @@ const contentSchema = new mongoose.Schema(
 );
 
 contentSchema.pre("validate", function () {
-  if (this.type === "quran_task") {
-    this.reviewRequired = true;
-  }
   if (this.status === "published") {
     if (!this.competencies || this.competencies.length === 0) {
       this.invalidate("competencies", "Published content must map to at least one competency");
