@@ -1,6 +1,6 @@
 # Secrets Handling (SEC-004)
 
-Last updated: 2026-11-09
+Last updated: 2026-11-11
 
 ## Purpose
 
@@ -14,13 +14,21 @@ This file explains where secrets live, how they are kept out of source control, 
 
 ## Current secrets
 
-| Name                | What it is                                  | Where it is used    |
-| ------------------- | ------------------------------------------- | ------------------- |
-| `DATABASE_PASSWORD` | Password of the MongoDB Atlas database user | `src/config/env.js` |
+| Name                | What it is                                                                             | Where it is used    |
+| ------------------- | -------------------------------------------------------------------------------------- | ------------------- |
+| `DATABASE_PASSWORD` | Password of the MongoDB Atlas database user                                            | `src/config/env.js` |
+| `JWT_SECRET`        | Key used to sign login tokens. Anyone who has it can create a valid token for any user | `src/config/env.js` |
 
-Non-secret settings (`NODE_ENV`, `PORT`, and the `DATABASE` connection string with the `<PASSWORD>` placeholder) are kept in the same file for convenience.
+Non-secret settings are kept in the same file for convenience: `NODE_ENV`, `PORT`, `CLIENT_ORIGIN`, `JWT_EXPIRES_IN`, and the `DATABASE` connection string with the `<PASSWORD>` placeholder.
 
-Future secrets (for example a JWT signing key) must be added to `.env.example` as names only, and listed in the table above.
+Future secrets (for example the key of an email service) must be added to `.env.example` as names only, and listed in the table above.
+
+## JWT_SECRET rules
+
+- It must be at least 32 characters. The server refuses to start otherwise.
+- Generate it randomly, for example: `node -e "console.log(require('crypto').randomBytes(48).toString('hex'))"`.
+- Use a different value in development, staging and production.
+- The placeholder in `.env.example` is deliberately too short, so a copied example file cannot start the server with a known secret.
 
 ## Separate environments (OPS-001)
 
@@ -33,10 +41,12 @@ Future secrets (for example a JWT signing key) must be added to `.env.example` a
 
 If a secret is shared by mistake (chat, screenshot, commit, log):
 
-1. Change it in MongoDB Atlas (Database Access, edit the user's password).
+1. Replace it: for the database password, change it in MongoDB Atlas (Database Access, edit the user's password). For `JWT_SECRET`, generate a new random value.
 2. Update `server/.env` on every machine that uses it.
 3. Tell the team.
 4. If it was committed to git, treat it as exposed even after the file is deleted, because it stays in the git history.
+
+Rotating `JWT_SECRET` logs everyone out, because old tokens stop being valid.
 
 Owner of rotation: Mohammad (Team Leader)
 
