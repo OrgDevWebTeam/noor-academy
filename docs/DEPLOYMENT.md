@@ -2,12 +2,12 @@
 
 ## How it works
 
-| Event                    | What happens                                                                                                                                                                         |
-| ------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| Pull request             | `Container build` builds the image, starts it, checks `/v1/health`, checks protected routes return 401, and checks production refuses an unsafe configuration. Nothing is published. |
-| Merge to `main`          | The image is built and pushed to GitHub Container Registry as `ghcr.io/<owner>/noor-api:<commit sha>`, then the staging job runs.                                                    |
-| Manual run, `production` | Run **Deploy** from the Actions tab, choose `production` and a commit SHA. A required reviewer must approve before the job runs.                                                     |
-| Rollback                 | Run **Deploy** again with an older commit SHA. The image already exists, so nothing is rebuilt.                                                                                      |
+| Event                    | What happens                                                                                                                                                                              |
+| ------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Pull request             | `Container build` builds the image, starts it, checks `/api/v1/health`, checks protected routes return 401, and checks production refuses an invalid configuration. Nothing is published. |
+| Merge to `main`          | The image is built and pushed to GitHub Container Registry as `ghcr.io/<owner>/noor-api:<commit sha>`, then the staging job runs.                                                         |
+| Manual run, `production` | Run **Deploy** from the Actions tab, choose `production` and a commit SHA. A required reviewer must approve before the job runs.                                                          |
+| Rollback                 | Run **Deploy** again with an older commit SHA. The image already exists, so nothing is rebuilt.                                                                                           |
 
 Pull requests never deploy and never see secrets, so forks of this public repo cannot reach them.
 
@@ -22,9 +22,11 @@ When a host is chosen:
 2. Set a repository variable `DEPLOY_TARGET` (for example `fly`, `render`, `aws`).
 3. Add that host's credentials as **environment secrets** in each GitHub Environment
    (`staging`, `production`), never as repository secrets, so staging cannot see production's.
-4. Set each environment's variables (see `.env.example`): `APP_ENV`, `MONGODB_URI`, `MONGODB_DB`
-   and the `OIDC_*` values. The API refuses to start in staging/production if they are unsafe.
-5. Run migrations before the new version starts: `node scripts/migrate.mjs up` (included in the image).
+4. Set each environment's variables (see `apps/api/.env.example`): `NODE_ENV`, `PORT`, `DATABASE`
+   (with the `<PASSWORD>` placeholder), `DATABASE_PASSWORD`, `JWT_SECRET` (at least 32 characters)
+   and `CLIENT_ORIGIN`. The API refuses to start if any of them is missing or invalid.
+5. There are no migrations to run. The API uses mongoose, which creates collections and indexes
+   from the models when it connects.
 
 ## Environments
 

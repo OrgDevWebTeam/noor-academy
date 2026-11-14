@@ -57,6 +57,11 @@ jobs:
 
       - name: Test
         run: pnpm test
+        env:
+          # The api tests start a throwaway MongoDB (mongodb-memory-server). Pin a build that
+          # exists for the runner, because newer Ubuntu images have no MongoDB binary yet.
+          MONGOMS_DISTRO: ubuntu-22.04
+          MONGOMS_VERSION: 7.0.14
 
       - name: Build
         run: pnpm build
